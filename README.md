@@ -14,6 +14,8 @@ Yogyakarta, sebuah kota dengan status daerah istimewa, memiliki banyak makanan k
 
 Oleh karena itu, “MANGAN YUK!” hadir untuk membantu masyarakat memamerkan kelezatan masakan mereka dan mempromosikan makanan lokal kepada seluruh pengunjung Yogyakarta. “MANGAN YUK!” adalah sebuah website yang akan mempublikasikan makanan-makanan di daerah Yogyakarta dengan tujuan membantu masyarakat dalam melakukan perdagangan serta membantu masyarakat memanfaatkan teknologi hingga melakukan promosi secara luas. “MANGAN YUK!” didesain dengan memiliki sistem yang interaktif agar user merasa nyaman ketika menjelajahi website kami. Di lain sisi, kami juga menghadirkan sistem admin yang mudah dimengerti agar dapat dipakai oleh masyarakat dengan berbagai macam usia. Pada halaman utama MANGAN YUK! User dapat melihat berbagai macam makanan yang terdapat di Yogyakarta, User juga dapat menggunakan fitur search pada website kami dimana dapat membantu user dalam melakukan pencarian makanan yang sedang user inginkan dan juga memberikan nama restoran yang menyediakan makanan tersebut . Selain itu, pada MANGAN YUK! juga terdapat fitur search by price dimana user dapat mencari makanan dengan harga di bawah atau di atas angka yang user input.
 
+
+
 1. Daftar Makanan
    
 - Guest (Tidak Login): Bisa melihat daftar makanan berdasarkan kategori
@@ -108,3 +110,12 @@ mereka, melihat makanan yang telah mereka tandai, dan menghapus penanda.
   - Nama makanan, harga, kategori, restoran terkait
   
   Pada bagian ini yang mengerjakan : Ammara Fasha Zia
+
+
+**Sumber initial dataset**
+
+Dataset ini diperoleh dari hasil proses pengambilan data (scraping) makanan pada aplikasi GoFood di Gojek. Hasil data yang telah kami olah ini telah melalui tahap pembersihan untuk memastikan akurasi dan kualitas informasi. Berikut adalah hasil datanya:
+
+https://docs.google.com/spreadsheets/d/1EfaPKBR3PJBr2Co7Fe3BWvsz03EufzYwf5U5pksvyM4/edit?usp=sharing 
+
+
