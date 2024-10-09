@@ -27,6 +27,7 @@ website. Mereka memilih makanan yang ditampilkan, mengelompokkannya berdasarkan 
   - Daftar makanan yang ditampilkan secara umum (berdasarkan kategori,
   nama makanan, harga atau restoran).
   - Filter pencarian harga
+  
   Pada bagian ini yang mengerjakan : Peter Putra Lesmana
 
  2. Pencarian Makanan
@@ -45,6 +46,7 @@ yang telah mereka simpan.
   - Gambar makanan
   - Nama restoran
   - Opsi tambah, hapus dan edit makanan
+  
   Pada bagian ini yang mengerjakan : Athallah Nadhif Yuzak
 
 3. Administrasi Makanan
@@ -61,6 +63,7 @@ platform, mengedit detail, dan memastikan kategori yang tepat.
   - Nama restoran
   - Tombol "Review" (untuk mengarahkan ke halaman ulasan)
   - Status bookmark (favorit atau tidak)
+  
   Pada bagian ini yang mengerjakan : Abby Shelley Tampubolon
 
 4. Review atau Ulasan Pengguna
@@ -74,6 +77,7 @@ platform, mengedit detail, dan memastikan kategori yang tepat.
   - Teks ulasan
   - Waktu ulasan dibuat
   - Nama makanan yang diulas
+  
   Pada bagian ini yang mengerjakan : Naya Kusumahayati Rachmi
 
 5. Profile (login, register, edit profile)
@@ -87,6 +91,7 @@ yang ada di platform, mengelola kategori.
   - Email pengguna
   - Password
   - Foto profil
+  
   Pada bagian ini yang mengerjakan : Vico Winner Sebastian Aritonang
 
 6. Bookmark makanan
@@ -101,4 +106,5 @@ mereka, melihat makanan yang telah mereka tandai, dan menghapus penanda.
   - Daftar makanan yang ditandai sebagai favorit
   - Opsi untuk menambah dan menghapus makanan dari daftar bookmark
   - Nama makanan, harga, kategori, restoran terkait
+  
   Pada bagian ini yang mengerjakan : Ammara Fasha Zia
