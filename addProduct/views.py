@@ -14,13 +14,12 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-
 def add_food(request):
     if request.method == 'POST':
         form = FoodForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('addProduct:home')  # Use 'app_name:view_name' for namespaced URL resolution
+            return redirect('addProduct:home')
     else:
         form = FoodForm()
     return render(request, 'add_food.html', {'form': form})
@@ -52,7 +51,15 @@ def edit_food(request, id):
         form = FoodForm(request.POST, request.FILES, instance=food)
         if form.is_valid():
             form.save()
-            return redirect('addProduct:home')  # Use 'app_name:view_name' for namespaced URL resolution
+            return redirect('addProduct:home')
     else:
         form = FoodForm(instance=food)
     return render(request, 'edit_food.html', {'form': form})
+
+
+def delete_food(request, id):
+    food = get_object_or_404(Food, pk=id)
+    if request.method == 'POST':
+        food.delete()
+        return redirect('addProduct:home')  # Langsung hapus dan kembali ke homepage
+    return redirect('addProduct:home')  # Jika bukan POST, kembali ke homepage tanpa melakukan apa-apa
