@@ -1,0 +1,21 @@
+<h1>Selamat Datang di Mangan-Yuk</h1>
+<p>Selamat datang, {{ request.user.username }}!</p>
+
+<a href="{% url 'addProduct:add_food' %}">
+    <button>Tambah Makanan Baru</button>
+</a>
+
+<h2>Daftar Makanan</h2>
+<ul>
+    {% for food in foods %}
+        <li>
+            <strong>{{ food.name }}</strong><br>
+            Restaurant: {{ food.restaurant }}<br>
+            Harga: Rp.{{ food.price }}<br>
+            Preference: {{ food.preference }}<br>
+            {% if food.image %}
+                <img src="{{ food.image.url }}" alt="{{ food.name }}" style="width: 150px; height: auto;">
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

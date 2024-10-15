@@ -11,10 +11,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from django.contrib import admin
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+
+
+urlpatterns = [
+    # URL Anda lainnya
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# Django akan membuat folder ini jika belum ada
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -39,6 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mangan_yuk',
     'main',
+    'addProduct',
+    
+    
 ]
 
 MIDDLEWARE = [
