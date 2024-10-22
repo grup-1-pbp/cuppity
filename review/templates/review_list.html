@@ -1,4 +1,3 @@
-# templates/reviews/review_list.html
 {% extends 'base.html' %}
 
 {% block content %}
@@ -6,7 +5,7 @@
     <div class="mb-8">
         <h1 class="text-3xl font-bold mb-2">{{ food.name }}</h1>
         <div class="flex items-center mb-4">
-            <div class="text-2xl mr-2">Average Rating: {{ avg_rating }}</div>
+            <div class="text-2xl mr-2">Average Rating: <span class="average-rating">{{ avg_rating }}</span></div>
             <div class="flex">
                 {% for i in "12345"|make_list %}
                     {% if forloop.counter <= avg_rating %}
@@ -26,7 +25,7 @@
         {% endif %}
     </div>
 
-    <div class="grid gap-6">
+    <div class="grid gap-6 reviews-list">
         {% for review in reviews %}
             <div class="bg-white p-6 rounded-lg shadow">
                 <div class="flex justify-between items-start mb-4">
@@ -49,9 +48,9 @@
                 
                 {% if user == review.user %}
                     <div class="mt-4 flex gap-2">
-                        <a href="{% url 'reviews:edit_review' food.id %}" 
+                        <a href="{% url 'reviews:edit_review' review.id %}" 
                            class="text-blue-500 hover:text-blue-700">Edit</a>
-                        <form method="post" action="{% url 'reviews:delete_review' food.id %}"
+                        <form method="post" action="{% url 'reviews:delete_review' review.id %}" 
                               class="inline">
                             {% csrf_token %}
                             <button type="submit" 
@@ -70,28 +69,29 @@
 </div>
 
 <script>
-async function refreshReviews() {
-    const response = await fetch(`/api/food/{{ food.id }}/reviews/`);
-    const data = await response.json();
-    const reviews = JSON.parse(data.reviews);
-    
-    // Update average rating
-    document.querySelector('.average-rating').textContent = data.avg_rating;
-    
-    // Update reviews list
-    const reviewsList = document.querySelector('.reviews-list');
-    reviewsList.innerHTML = reviews.map(review => `
-        <div class="review-item">
-            <div class="review-header">
-                <span class="username">${review.fields.user}</span>
-                <div class="rating">${'★'.repeat(review.fields.rating)}${'☆'.repeat(5-review.fields.rating)}</div>
+    async function refreshReviews() {
+        const response = await fetch(`/api/food/{{ food.id }}/reviews/`);  // Ensure this matches your URL pattern
+        const data = await response.json();
+        
+        // Assuming you have a container for reviews in your template
+        const reviewsList = document.querySelector('.reviews-list');  // Make sure to add a class for this container
+        
+        // Update average rating
+        document.querySelector('.average-rating').textContent = data.avg_rating;
+        
+        // Update reviews list
+        reviewsList.innerHTML = data.reviews.map(review => `
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="username">${review.user.username}</span>
+                    <div class="rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                </div>
+                <p class="comment">${review.comment}</p>
             </div>
-            <p class="comment">${review.fields.comment}</p>
-        </div>
-    `).join('');
-}
-
-// Refresh reviews periodically
-setInterval(refreshReviews, 5000);
-</script>
+        `).join('');
+    }
+    
+    // Refresh reviews periodically
+    setInterval(refreshReviews, 5000);
+    </script>
 {% endblock %}

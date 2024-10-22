@@ -1,27 +1,13 @@
-# review/models.py
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User  # Make sure this line is included
 from addProduct.models import Food
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Review(models.Model):
-    food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='reviews')
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    rating = models.DecimalField(
-        max_digits=3, 
-        decimal_places=1,
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)  # Ensure Food is defined
     comment = models.TextField()
+    rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        unique_together = ('food', 'user')
-        ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.user.username}'s review for {self.food.name}"
+        return f"{self.user.username} - {self.food.name}"
