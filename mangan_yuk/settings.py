@@ -36,7 +36,8 @@ urlpatterns = [
 SECRET_KEY = 'django-insecure-gses-ufdytl&)dgnxyp70s$*_ptww(!s4u%b@=t2@ew*4o*(-8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+PRODUCTION = os.getenv("PRODUCTION", False)
+DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", ]
 
@@ -135,6 +136,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # This is optional and useful for production
+
 
 # Media files (User-uploaded content)
 MEDIA_URL = '/media/'
