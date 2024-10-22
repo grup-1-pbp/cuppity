@@ -1,0 +1,85 @@
+# templates/reviews/review_form.html
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">
+        {% if review %}
+            Edit Review for {{ food.name }}
+        {% else %}
+            Write a Review for {{ food.name }}
+        {% endif %}
+    </h1>
+
+    <form method="post" class="max-w-lg">
+        {% csrf_token %}
+        
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                Rating (1-5)
+            </label>
+            <div class="star-rating mb-2">
+                <input type="radio" id="star5" name="rating" value="5" {% if form.rating.value == 5 %}checked{% endif %}>
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4" {% if form.rating.value == 4 %}checked{% endif %}>
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3" {% if form.rating.value == 3 %}checked{% endif %}>
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2" {% if form.rating.value == 2 %}checked{% endif %}>
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1" {% if form.rating.value == 1 %}checked{% endif %}>
+                <label for="star1">★</label>
+            </div>
+            {% if form.rating.errors %}
+                <p class="text-red-500 text-xs italic">{{ form.rating.errors }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                Your Review
+            </label>
+            {{ form.comment }}
+            {% if form.comment.errors %}
+                <p class="text-red-500 text-xs italic">{{ form.comment.errors }}</p>
+            {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                {% if review %}Update Review{% else %}Submit Review{% endif %}
+            </button>
+            <a href="{% url 'reviews:review_list' food.id %}" 
+               class="text-blue-500 hover:text-blue-700">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    font-size: 2em;
+    color: #ddd;
+    padding: 0 0.1em;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffd700;
+}
+</style>
+{% endblock %}

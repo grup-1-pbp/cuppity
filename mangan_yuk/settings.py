@@ -55,8 +55,7 @@ INSTALLED_APPS = [
     'mangan_yuk',
     'main',
     'addProduct',
-    
-    
+    'review',
 ]
 
 MIDDLEWARE = [
