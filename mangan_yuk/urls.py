@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('addProduct.urls', namespace='addProduct')),  # Namespace sesuai dengan `app_name`
     path('review/', include('review.urls', namespace='review')),
+    path('', include('detailmakanan.urls',namespace='detailmakanant')) 
 ]
