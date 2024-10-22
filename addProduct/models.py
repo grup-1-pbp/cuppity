@@ -9,6 +9,7 @@ class Food(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     restaurant = models.CharField(max_length=255)
+    deskripsi = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     preference = models.CharField(
         max_length=255,
@@ -27,6 +28,9 @@ class Food(models.Model):
         price = self.cleaned_data['price']
         return price
     
+    def clean_deskripsi(self):
+        deskripsi = self.cleaned_data['deskripsi']
+        return deskripsi
     def clean_restaurant(self):
         restaurant = self.cleaned_data['restaurant']
         return restaurant
@@ -36,3 +40,4 @@ class Food(models.Model):
     def clean_image_url(self):
         image_url = self.cleaned_data['image_url']
         return image_url
+    
