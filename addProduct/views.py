@@ -92,3 +92,5 @@ def delete_food(request, id):
     food = get_object_or_404(Food,id=id)
     food.delete()
     return redirect('addProduct:home') 
+
+
