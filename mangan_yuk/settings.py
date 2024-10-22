@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'main',
     'addProduct',
     'review',
-    'detailmakanan'
+    'detailmakanan',
     
     
 ]
@@ -143,7 +143,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # This is optional and use
 # Media files (User-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-APPEND_SLASH = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
