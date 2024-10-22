@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block meta %}
     <title>Add Food</title>
-</head>
-<body>
+{% endblock meta %}
+
+{% block content %}
     <h2>Tambah Makanan Baru</h2>
     <div class="add-food-container">
         <form method="post">
@@ -30,8 +29,11 @@
                 <label for="id_preference">Preference</label>
                 {{ form.preference }}
             </div>
+            <div>
+                <label for="id_description">Description</label>
+                {{ form.description }}
+                
             <button type="submit">Add Food</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock content %}
