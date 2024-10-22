@@ -83,32 +83,31 @@
     </div>
   </div>
 
-  <!-- Product Cards -->
-<div id="food_entry_list" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-  {% for food in foods %}
-  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-    <div class="p-4">
-      <img src="{{ food.image_url }}" alt="{{ food.name }}" class="w-full h-48 object-cover">
+  <div id="food_entry_list" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {% for food in foods %}
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-4">
+        <img src="{{ food.image_url }}" alt="{{ food.name }}" class="w-full h-48 object-cover">
+      </div>
+      <div class="px-6 py-4">
+        <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">{{ food.get_preference_display }}</span>
+        <h3 class="text-lg font-semibold mt-2">{{ food.name }}</h3>
+        <p class="text-gray-600 mt-1">Rp.{{ food.price }}</p>
+        <p class="text-sm text-gray-500">{{ food.restaurant }}</p>
+        <p class="text-sm text-gray-500 mt-2">{{ food.deskripsi }}</p>
+      </div>
+      <div class="px-6 py-4 flex justify-between items-center">
+        <a href="{% url 'addProduct:edit_food' food.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
+        <a href="{% url 'detailmakanan:product_detail' food.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</button>
+        <form action="{% url 'addProduct:delete_food' food.id %}" method="post" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
+        </form>
+      </div>    
     </div>
-    <div class="px-6 py-4">
-      <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">{{ food.get_preference_display }}</span>
-      <h3 class="text-lg font-semibold mt-2">{{ food.name }}</h3>
-      <p class="text-gray-600 mt-1">Rp.{{ food.price }}</p>
-      <p class="text-sm text-gray-500">{{ food.restaurant }}</p>
-      <p class="text-sm text-gray-500 mt-2">{{ food.deskripsi }}</p>
-    </div>
-    <div class="px-6 py-4 flex justify-between items-center">
-      <a href="{% url 'addProduct:edit_food' food.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
-      <a href="{% url 'detailmakanan:product_detail' food.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
-      <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</button>
-      <form action="{% url 'addProduct:delete_food' food.id %}" method="post" class="inline">
-        {% csrf_token %}
-        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
-      </form>
-    </div>    
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 
   <!-- Empty State -->
   {% if not foods %}
@@ -190,7 +189,7 @@ async function refreshFoodEntries() {
                         </div>
                         <div class="px-6 py-4 flex justify-between items-center">
                             <a href="/edit-food/${food.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
-                            <a href="/detailmakanan/product_detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+                            <a href="/detailmakanan/product-detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
                             <form action="/delete-food/${food.pk}" method="post" class="inline">
                                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                                 <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
