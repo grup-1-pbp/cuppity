@@ -13,5 +13,4 @@ urlpatterns = [
     path('json/<int:id>/', views.show_json_by_id, name='show_json_by_id'),
     path('edit_food/<int:id>/', views.edit_food, name='edit_food'),
     path('delete_food/<int:id>/', views.delete_food, name='delete_food'),
-    path('review/', include('review.urls')),
 ]

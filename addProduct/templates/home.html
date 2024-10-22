@@ -26,6 +26,10 @@
                 {% csrf_token %}
                 <button type="submit">Delete</button>
             </form>
+            <a href="{% url 'reviews:review_list' food.id %}">
+                <button>Review</button>
+            </a>
+            
         </li>
         
     {% endfor %}
