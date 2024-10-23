@@ -5,7 +5,7 @@ class Food(models.Model):
         ('Indo', 'Indonesia'),
         ('Chin', 'Chinese'),
         ('West', 'Western'),
-        ('Jap', 'Japanese'),
+        ('Japan', 'Japanese'),
         ('India,', 'Indian')
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
