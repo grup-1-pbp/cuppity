@@ -2,9 +2,8 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from autentifikasi.views import register, login_user, logout, edit_profile
 
-app_name = 'addProduct'
+app_name = 'autentifikasi'
 
 urlpatterns = [
     path('register/', views.register, name='register'),

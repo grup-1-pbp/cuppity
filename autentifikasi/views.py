@@ -8,8 +8,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .decorators import role_required
+from autentifikasi.decorators import role_required
 from django.urls import reverse
+
 
 def login_user(request):
    if request.method == 'POST':
@@ -30,13 +31,12 @@ def register(request):
         form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            # Pastikan profil tidak dibuat dua kali
             if not Profile.objects.filter(user=user).exists():
                 profile = Profile.objects.create(
                     user=user,
                     role=form.cleaned_data.get('role'),
                     budget=form.cleaned_data.get('budget'),
-                    profile_image=form.cleaned_data.get('profile_image')  # profil gambar di-upload
+                    profile_image=form.cleaned_data.get('profile_image') 
                 )
             messages.success(request, 'Your account has been successfully created!')
             return redirect('autentifikasi:login')
