@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'main',
     'addProduct',
     'detailmakanan',
+    'review',
     
     
 ]
