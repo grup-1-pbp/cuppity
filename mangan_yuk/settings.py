@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'mangan_yuk',
     'main',
     'addProduct',
-    'detailmakanan',
+    'detailMakananfix',
     'review',
     
     

@@ -4,7 +4,7 @@ from .forms import ReviewForm  # You'll create this form next
 from django.contrib.auth.decorators import login_required
 
 def food_reviews(request, id):
-    food = get_object_or_404(Food, id=id)
+    food = Food.objects.get(pk=id)
     reviews = food.reviews.all()  # Fetch reviews related to this food item
 
     if request.method == "POST":
@@ -14,16 +14,20 @@ def food_reviews(request, id):
             review.food = food
             review.user = request.user
             review.save()
-            return redirect('detailmakanan:food_reviews', id=food.id)
+            return redirect('detailMakananfix:food_reviews', id=food.id)
     else:
         form = ReviewForm()
 
     # Calculate the average rating (including the initial rating)
-    total_reviews = reviews.count() + 100  # Assuming the initial rating is from 100 people
-    avg_rating = (sum([review.rating for review in reviews]) + (food.rating * 100)) / total_reviews
+    total_reviews = reviews.count()  # Assuming the initial rating is from 100 people
+    if total_reviews == 0:
+        total_reviews = reviews.count() +1 
+
+    avg_rating = (sum([review.rating for review in reviews]) ) / total_reviews
+    
 
     return render(request, 'reviews.html', {
-        'food_id': food_id,
+        'food_id': food.id,
         'reviews': reviews,
         'form': form,
         'avg_rating': avg_rating,

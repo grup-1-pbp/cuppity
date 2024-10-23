@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User  # Assuming you have user authentication
 from addProduct.models import Food
 
+
+
 class Review(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='reviews')  # Link to Food
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to User who gave the review

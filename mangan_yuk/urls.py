@@ -20,5 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('addProduct.urls', namespace='addProduct')),  # Namespace sesuai dengan `app_name`
-    path('product_detail/', include('detailmakanan.urls')),
+    path('product-detail/', include('detailMakananfix.urls')),
+    path('review/', include('review.urls', namespace='review')),
 ]
