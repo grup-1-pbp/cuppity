@@ -11,6 +11,7 @@ class Food(models.Model):
     restaurant = models.CharField(max_length=255)
     deskripsi = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    reviews = models.CharField(max_length=255)
     preference = models.CharField(
         max_length=255,
         choices=PREFERENCE_CHOICES

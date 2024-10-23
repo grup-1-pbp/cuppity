@@ -64,10 +64,19 @@
     <div style="width: 90%; max-width: 1000px; margin: 0 auto;">
         <p style="color: rgb(0, 0, 0); margin: 10px 0; font-weight: 600; font-size: 1.3em;">Still Not So Sure? Read the Reviews!</p>
     </div>
+<<<<<<< HEAD
     <a href="/product-detail/review/{{food.id}}">
         <button style="width: 100%; padding: 10px; border-radius: 5px; font-size: 1.0em; font-weight: bold; background-color: rgb(82, 82, 82); color: white;">Read Reviews</button>
     </a>
 
+=======
+    <div style="width: 90%; max-width: 1000px; margin: 10px auto; text-align: center;">
+        <a href="{% url 'review:review_list' food.pk %}" style="display: block; width: 100%; text-decoration: none;">
+            <button style="width: 100%; padding: 10px; border-radius: 5px; font-size: 1.0em; font-weight: bold; background-color: rgb(82, 82, 82); color: white;">Read Reviews</button>
+        </a>
+    </div>
+    
+>>>>>>> 9d1706b40df93bd1d77b7661e5e0defaa75a23bf
 
     <script>
         function toggleLike() {
