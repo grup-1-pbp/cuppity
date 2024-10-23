@@ -1,6 +1,7 @@
-from django.shortcuts import render
+# detailmakanan/views.py
+from django.shortcuts import render, get_object_or_404
+from addProduct.models import Food
 
-def product_detail(request, product_id):
-    product = Product.objects.get(id=product_id)  # Mengambil detail produk berdasarkan ID
-    return render(request, 'product_detail.html', {'product': product})
-
+def product_detail(request, id):
+    food = get_object_or_404(Food, pk=id)  # Fetch the food object using the UUID
+    return render(request, 'product_detail.html', {'food': food})
