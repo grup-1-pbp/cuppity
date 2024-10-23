@@ -10,6 +10,6 @@ app_name = 'detailmakanan'
 
 urlpatterns = [
     path('product_detail/<uuid:id>/', views.product_detail, name='product_detail'),
-    path('reviews/<int:food_id>/', review_views.food_reviews, name='food_reviews'),  # Use review_views here
+    path('reviews/<uuid:food_id>/', review_views.food_reviews, name='food_reviews'),  # Use review_views here
 ]
 
