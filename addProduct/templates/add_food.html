@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Food</title>
+</head>
+<body>
+    <h2>Tambah Makanan Baru</h2>
+    <div class="add-food-container">
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label for="id_image_url">Image URL</label>
+                {{ form.image_url }}
+            </div>
+            <div>
+                <label for="id_name">Food Name</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label for="id_restaurant">Restaurant</label>
+                {{ form.restaurant }}
+            </div>
+            <div>
+                <label for="id_price">Price</label>
+                {{ form.price }}
+            </div>
+            <div>
+                <label for="id_preference">Preference</label>
+                {{ form.preference }}
+            </div>
+            <button type="submit">Add Food</button>
+        </form>
+    </div>
+</body>
+</html>
