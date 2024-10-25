@@ -20,7 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('addProduct.urls', namespace='addProduct')),  # Namespace sesuai dengan `app_name`
-    path('detailmakanan/', include('detailmakanan.urls',namespace='detailmakanan')), 
+    # path('detailmakanan/', include('detailmakanan.urls',namespace='detailmakanan')), 
     path('', include('autentifikasi.urls',namespace='autentifikasi')),
     path('', include('main.urls',namespace='main')),
     

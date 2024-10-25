@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Import food data from CSV'
 
     def handle(self, *args, **kwargs):
-        with open("C:\\Users\\MyBook Z Series\\Documents\\pbp\\mangan-yuk\\dataset.csv", newline='', encoding='utf-8') as csvfile:
+        with open("//Users//athallah//Documents//PBP/mangan-yuk//dataset.csv", newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 Food.objects.create(
@@ -18,3 +18,4 @@ class Command(BaseCommand):
                     image_url=row['URL_Gambar']
                 )
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
+    
