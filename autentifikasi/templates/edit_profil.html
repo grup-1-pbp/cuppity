@@ -43,7 +43,7 @@
         }
 
         .form-group input[type="text"],
-        .form-group input[type="file"],
+        .form-group input[type="url"], /* Ubah dari input file menjadi input url */
         .form-group select {
             padding: 10px;
             font-size: 14px;
@@ -93,7 +93,7 @@
 <body>
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST">  <!-- Hapus enctype="multipart/form-data" -->
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">Username</label>
@@ -108,8 +108,8 @@
                 {{ form.budget }}
             </div>
             <div class="form-group">
-                <label for="profile_image">Upload Profile Image</label>
-                {{ form.profile_image }}
+                <label for="profile_image">Profile Image URL</label>  <!-- Ganti label -->
+                {{ form.profile_image }}  <!-- Form field sekarang menerima input URL -->
             </div>
             <button class="btn" type="submit">Save Changes</button>
         </form>

@@ -44,7 +44,6 @@
 
         .form-group input[type="text"],
         .form-group input[type="password"],
-        .form-group input[type="file"],
         .form-group select {
             padding: 10px;
             font-size: 14px;
@@ -94,7 +93,7 @@
 <body>
     <div class="register-container">
         <h1>Create your account</h1>
-        <form method="POST" enctype="multipart/form-data">  
+        <form method="POST">  <!-- Hapus enctype karena tidak lagi menangani file upload -->
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">Username</label>
@@ -117,7 +116,7 @@
                 {{ form.password2 }}
             </div>
             <div class="form-group">
-                <label for="profile_image">Upload Profile Image</label>
+                <label for="profile_image">Profile Image URL</label> <!-- Ganti label di sini -->
                 {{ form.profile_image }}
             </div>
             <input class="btn" type="submit" name="submit" value="Create!">

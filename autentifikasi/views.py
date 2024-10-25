@@ -28,7 +28,7 @@ def login_user(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST, request.FILES)
+        form = UserRegisterForm(request.POST)  # Hanya POST data, karena tidak ada FILES
         if form.is_valid():
             user = form.save()
             if not Profile.objects.filter(user=user).exists():
@@ -36,15 +36,16 @@ def register(request):
                     user=user,
                     role=form.cleaned_data.get('role'),
                     budget=form.cleaned_data.get('budget'),
-                    profile_image=form.cleaned_data.get('profile_image') 
+                    profile_image=form.cleaned_data.get('profile_image')  # Menyimpan URL sebagai teks
                 )
             messages.success(request, 'Your account has been successfully created!')
             return redirect('autentifikasi:login')
     else:
         form = UserRegisterForm()
-    
+
     context = {'form': form}
     return render(request, 'register.html', context)
+
 
 @login_required
 def edit_profile(request):
@@ -56,12 +57,14 @@ def edit_profile(request):
         profile = None  # Jika profile tidak ditemukan
 
     if request.method == "POST":
-        form = EditProfileForm(request.POST, instance=user, profile=profile)  # Untuk update user dan profile
+        form = EditProfileForm(request.POST, instance=user, profile=profile)  # Update user dan profile
         if form.is_valid():
             form.save()
 
-            # Simpan perubahan role di profile
+            # Simpan perubahan role, budget, dan URL gambar ke profile
             profile.role = form.cleaned_data.get('role')
+            profile.budget = form.cleaned_data.get('budget')
+            profile.profile_image = form.cleaned_data.get('profile_image')  # Simpan URL gambar
             profile.save()
 
             return redirect('main:home')  # Redirect ke halaman home setelah update
@@ -73,6 +76,7 @@ def edit_profile(request):
         'profile': profile
     }
     return render(request, 'edit_profil.html', context)
+
 
 def logout_user(request):
     logout(request)

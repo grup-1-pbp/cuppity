@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from autentifikasi.decorators import role_required
 # Create your views here.
 
-@login_required
+
 def home(request):
     if request.user.is_authenticated:
         try:

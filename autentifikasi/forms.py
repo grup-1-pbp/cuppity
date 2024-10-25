@@ -10,7 +10,7 @@ class UserRegisterForm(UserCreationForm):
     ]
     role = forms.ChoiceField(choices=ROLE_CHOICES)
     budget = forms.IntegerField(required=False, label="Budget")
-    profile_image = forms.ImageField(required=False, label="Upload Profile Image")
+    profile_image = forms.URLField(required=False, label="Profile Image URL")  # Menggunakan URLField
 
     class Meta:
         model = User
@@ -19,13 +19,16 @@ class UserRegisterForm(UserCreationForm):
 class EditProfileForm(forms.ModelForm):
     role = forms.ChoiceField(choices=Profile.ROLE_CHOICES)
     budget = forms.IntegerField(required=False, label="Budget")
-    profile_image = forms.ImageField(required=False, label="Upload Profile Image")
+    profile_image = forms.URLField(required=False, label="Profile Image URL")  # Ganti menjadi URLField
+
     class Meta:
         model = User
-        fields = ['username','budget','profile_image']
+        fields = ['username', 'budget', 'profile_image']
 
     def __init__(self, *args, **kwargs):
         profile = kwargs.pop('profile', None)
         super(EditProfileForm, self).__init__(*args, **kwargs)
         if profile:
             self.fields['role'].initial = profile.role
+            self.fields['budget'].initial = profile.budget
+            self.fields['profile_image'].initial = profile.profile_image  # Isi dengan URL gambar yang ada
