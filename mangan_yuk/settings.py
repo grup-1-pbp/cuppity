@@ -53,8 +53,14 @@ INSTALLED_APPS = [
     'main',
     'addProduct',
     'review',
+<<<<<<< HEAD
     'detailMakananfix',
     # 'rest_framework',
+=======
+    'homepage',
+    
+    
+>>>>>>> ad14d4f7c973347f11341abf4ba97af9b8c90c31
 ]
 
 MIDDLEWARE = [
