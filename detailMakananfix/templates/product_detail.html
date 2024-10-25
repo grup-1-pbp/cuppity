@@ -72,28 +72,28 @@
     <script>
         function toggleLike() {
             var likeBtn = document.getElementById("likeBtn");
-            var foodId = "{{ food.id }}"; // Ambil ID makanan dari template
+            var foodId = "{{ food.id }}"; // Pastikan ini adalah UUID
             var url = `/add_bookmark/${foodId}/`; // URL untuk menambahkan bookmark
 
             // Mengirim permintaan AJAX ke server
             fetch(url, {
-                method: 'POST', // Metode POST untuk menambahkan bookmark
+                method: 'POST',
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}', // Sertakan token CSRF
+                    'X-CSRFToken': getCookie('csrftoken'),
                     'Content-Type': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    // Jika sukses, toggle class 'liked' untuk mengganti warna hati
+                },
+                body: JSON.stringify({'food_id': foodId})
+            }).then(response => response.json()).then(data => {
+                if (data.status === 'success') {
                     likeBtn.classList.toggle("liked");
                 } else {
-                    console.error('Error adding bookmark');
+                    console.error('Error adding bookmark:', data.status);
                 }
             }).catch(error => {
                 console.error('Error:', error);
             });
         }
     </script>
+    
 </body>
 </html>
-    

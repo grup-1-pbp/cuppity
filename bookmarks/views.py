@@ -8,13 +8,19 @@ from django.contrib import messages
 
 @login_required
 def add_bookmark(request, food_id):
-    if request.method == "POST":
-        food = get_object_or_404(Food, id=food_id)
-        Bookmark.objects.get_or_create(user=request.user, food=food)
-        messages.success(request, "Bookmark added successfully!")
-        return JsonResponse({'message': 'Bookmark added!'}, status=200)
-    messages.error(request, "Invalid request")
-    return JsonResponse({'message': 'Invalid request'}, status=400)
+    if request.method == 'POST':
+        try:
+            food = Food.objects.get(id=food_id)
+        except Food.DoesNotExist:
+            return JsonResponse({'error': 'Food not found'}, status=404)
+
+        # Check if the bookmark already exists
+        if Bookmark.objects.filter(food=food, user=request.user).exists():
+            return JsonResponse({'status': 'already_exists'}, status=200)
+        else:
+            Bookmark.objects.create(food=food, user=request.user)
+            return JsonResponse({'status': 'success'}, status=201)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required
 def bookmark_list(request):
