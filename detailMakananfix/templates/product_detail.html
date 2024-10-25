@@ -64,12 +64,10 @@
     <div style="width: 90%; max-width: 1000px; margin: 0 auto;">
         <p style="color: rgb(0, 0, 0); margin: 10px 0; font-weight: 600; font-size: 1.3em;">Still Not So Sure? Read the Reviews!</p>
     </div>
-    <div style="width: 90%; max-width: 1000px; margin: 10px auto; text-align: center;">
-        <a href="{% url 'review:review_list' food.pk %}" style="display: block; width: 100%; text-decoration: none;">
-            <button style="width: 100%; padding: 10px; border-radius: 5px; font-size: 1.0em; font-weight: bold; background-color: rgb(82, 82, 82); color: white;">Read Reviews</button>
-        </a>
-    </div>
-    
+    <a href="/review/{{food.id}}">
+        <button style="width: 100%; padding: 10px; border-radius: 5px; font-size: 1.0em; font-weight: bold; background-color: rgb(82, 82, 82); color: white;">Read Reviews</button>
+    </a>
+
 
     <script>
         function toggleLike() {
@@ -79,5 +77,6 @@
             likeBtn.classList.toggle("liked");
         }
     </script>
+    
 </body>
 </html>
