@@ -48,7 +48,7 @@
                         <svg id="likeIcon" class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-.5.5-.5-.5a5.5 5.5 0 0 0-7.8 7.8l8.3 8.3 8.3-8.3a5.5 5.5 0 0 0 0-7.8z"></path>
                         </svg>
-                    </button>
+                    </button>   
                 </div>
             </div>
             <!-- Harga -->
@@ -72,10 +72,28 @@
     <script>
         function toggleLike() {
             var likeBtn = document.getElementById("likeBtn");
+            var foodId = "{{ food.id }}"; // Ambil ID makanan dari template
+            var url = `/add_bookmark/${foodId}/`; // URL untuk menambahkan bookmark
 
-            // Toggle class 'liked' untuk mengganti warna hati
-            likeBtn.classList.toggle("liked");
+            // Mengirim permintaan AJAX ke server
+            fetch(url, {
+                method: 'POST', // Metode POST untuk menambahkan bookmark
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}', // Sertakan token CSRF
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Jika sukses, toggle class 'liked' untuk mengganti warna hati
+                    likeBtn.classList.toggle("liked");
+                } else {
+                    console.error('Error adding bookmark');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
 </body>
 </html>
+    

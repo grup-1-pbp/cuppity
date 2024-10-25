@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daftar Bookmark</title>
+</head>
+<body>
+    <h1>Bookmarks</h1>
+    <ul>
+        {% for bookmark in bookmarks %}
+            <li>
+                {{ bookmark.food.name }} - {{ bookmark.food.restaurant }}
+                <a href="{% url 'bookmarks:delete_bookmark' bookmark.id %}">Remove</a>
+            </li>
+        {% empty %}
+            <li>Tidak ada bookmark tersedia.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -11,6 +11,8 @@
         <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Home</a>
         <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">My Profile</a>
         <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Add Food</a>
+        <!-- Bookmarks Link -->
+        <a href="#" id="bookmarks-link" class="text-white font-semibold hover:text-[#9F5F44]">Bookmarks</a>
       </div>
   
       <!-- Search Bar -->
@@ -44,12 +46,60 @@
         <input type="text" placeholder="Search" class="bg-transparent outline-none text-black px-2 w-full">
       </div>
     </div>
+
+    <div id="bookmarks" class="hidden mt-4">
+      <h3 class="text-white font-semibold">Bookmarks</h3>
+      <ul id="bookmarks-list" class="text-white">
+          {% for bookmark in bookmarks %}
+              <li>{{ bookmark.food.name }} - {{ bookmark.food.restaurant }}</li>
+          {% empty %}
+              <li>Tidak ada bookmark tersedia.</li>
+          {% endfor %}
+      </ul>
+    </div>
+
+
+    
+    <!-- Bookmarks Section (Hidden by default)
+    <div id="bookmarks" class="hidden md:block mt-4">
+        <h3 class="text-white font-semibold">Bookmarks</h3>
+        <ul id="bookmarks-list" class="text-white">
+        </ul>
+    </div> -->
+
   </nav>
   
   <script>
+    const bookmarks = [];
+
+// Function to add bookmarks
+    function addBookmark(item) {
+        bookmarks.push(item);
+        displayBookmarks();
+    }
+
+    // Function to display bookmarks
+    function displayBookmarks() {
+        const bookmarksList = document.getElementById('bookmarks-list');
+        bookmarksList.innerHTML = '';
+        bookmarks.forEach((bookmark, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerText = bookmark;
+            bookmarksList.appendChild(listItem);
+        });
+    }
+
+
     // Toggle mobile menu visibility
     document.getElementById('menu-toggle').addEventListener('click', function () {
       document.getElementById('mobile-menu').classList.toggle('hidden');
     });
+
+    document.getElementById('bookmarks-link').addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById('bookmarks').classList.toggle('hidden');
+    });
+
+
   </script>
   
