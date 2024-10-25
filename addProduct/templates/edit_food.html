@@ -42,7 +42,6 @@
                 <label for="deskripsi" class="block text-sm font-medium text-[#9F5F44]">Deskripsi</label> <!-- Sepia label -->
                 <textarea name="deskripsi" id="deskripsi" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#F0C868] focus:border-[#F0C868] sm:text-sm">{{ form.deskripsi.value }}</textarea> <!-- Sepia border focus -->
             </div>
-            // gambar url 
             <div>
                 <label for="image_url" class="block text-sm font-medium text-[#9F5F44]">Image URL</label> <!-- Sepia label -->
                 <input type="url" name="image_url" id="image_url" value="{{ form.image_url.value }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#F0C868] focus:border-[#F0C868] sm:text-sm"> <!-- Sepia border focus -->
@@ -58,7 +57,9 @@
 
             <!-- Modal Footer Buttons -->
             <div class="flex justify-end space-x-4 mt-6">
-                <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm">Cancel</button>
+                    <!-- Cancel Button that redirects to the homepage -->
+                    <a href="{% url 'addProduct:home' %}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm">Cancel</a> <!-- Use anchor tag to redirect to homepage -->
+
                 <button type="submit" class="bg-[#F0C868] text-white px-4 py-2 rounded-md shadow-sm hover:bg-[#d4a956]">Save</button> <!-- Gold button -->
             </div>
         </form>
