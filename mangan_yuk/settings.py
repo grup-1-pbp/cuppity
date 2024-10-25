@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'addProduct',
     'detailMakananfix',
     'review',
+    'homepage',
     
     
 ]
