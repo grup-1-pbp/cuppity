@@ -1,31 +1,236 @@
-<h1>Selamat Datang di Mangan-Yuk</h1>
-<p>Selamat datang, {{ request.user.username }}!</p>
+{% extends 'base.html' %}
+{% load static %}
 
-<a href="{% url 'addProduct:add_food' %}">
-    <button>Tambah Makanan Baru</button>
-</a>
+{% block meta %}
+<title>Mangan-Yuk Food List</title>
+{% endblock meta %}
 
-<h2>Daftar Makanan</h2>
-<ul>
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="mt-6 mb-4">
+  <button onclick="showFoodModal();" class="bg-[#F0C868] text-white font-bold text-xl px-5 py-3 rounded-lg flex items-center justify-center w-full max-w-md mx-auto">
+    <img src="https://icons.veryicon.com/png/o/miscellaneous/simple-linetype-icon/food-17.png" alt="Food Icon" class="w-8 h-8 mr-3">
+    Add New Food
+    </button>
+    </div>
+      <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Food Added</h1>
+  
+  <!-- Categories Filter -->
+  <div class="flex space-x-4 mb-6">
+    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Indonesian</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Chinese</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Western</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Japanese</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Indian</button>
+  </div>
+
+  <!-- Button to trigger the modal -->
+
+  <!-- Modal for AJAX Food Entry -->
+  <div id="foodModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+    <div id="foodModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+      <div class="flex items-center justify-between p-4 border-b rounded-t">
+        <h3 class="text-xl font-semibold text-gray-900">Add New Food Entry</h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" onclick="hideFoodModal();">
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 1 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+
+      <!-- Modal body for form -->
+      <div class="px-6 py-4 space-y-6">
+        <form id="foodForm">
+          <div class="mb-4">
+            <label for="food_name" class="block text-sm font-medium text-gray-700">Food Name</label>
+            <input type="text" id="food_name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter food name" required>
+          </div>
+          <div class="mb-4">
+            <label for="restaurant" class="block text-sm font-medium text-gray-700">Restaurant</label>
+            <input type="text" id="restaurant" name="restaurant" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter restaurant" required>
+          </div>
+          <div class="mb-4">
+            <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+            <input type="number" id="price" name="price" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter price" required>
+          </div>
+          <div class="mb-4">
+            <label for="preference" class="block text-sm font-medium text-gray-700">Preference</label>
+            <select id="preference" name="preference" class="mt-1 block w-full border border-gray-300 rounded-md p-2" required>
+              <option value="Indo">Indonesia</option>
+              <option value="Chin">Chinese</option>
+              <option value="West">Western</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="image_url" class="block text-sm font-medium text-gray-700">Image URL</label>
+            <input type="url" id="image_url" name="image_url" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter image URL" required>
+          </div>
+          <div class="mb-4">
+            <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+            <textarea id="deskripsi" name="deskripsi" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Enter description" required></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer for form submit button -->
+      <div class="flex justify-end p-4 border-t border-gray-200 rounded-b">
+        <button type="button" class="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg mr-2" onclick="hideFoodModal();">Cancel</button>
+        <button type="submit" form="foodForm" class="bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="food_entry_list" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     {% for food in foods %}
-        <li>
-            <strong>{{ food.name }}</strong><br>
-            Restaurant: {{ food.restaurant }}<br>
-            Harga: Rp.{{ food.price }}<br>
-            Preference: {{ food.preference }}<br>
-            {% if food.image_url %}
-                <img src="{{ food.image_url }}" alt="{{ food.name }}" style="width: 150px; height: auto;">
-            {% else %}
-                <p>No image available</p>
-            {% endif %}
-            <br>
-            <a href="{% url 'addProduct:edit_food' food.id %}">
-                <button>Edit</button>
-            </a>
-            <form action="{% url 'addProduct:delete_food' food.id %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-4">
+        <img src="{{ food.image_url }}" alt="{{ food.name }}" class="w-full h-48 object-cover">
+      </div>
+      <div class="px-6 py-4">
+        <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">{{ food.get_preference_display }}</span>
+        <h3 class="text-lg font-semibold mt-2">{{ food.name }}</h3>
+        <p class="text-gray-600 mt-1">Rp.{{ food.price }}</p>
+        <p class="text-sm text-gray-500">{{ food.restaurant }}</p>
+        <p class="text-sm text-gray-500 mt-2">{{ food.deskripsi }}</p>
+      </div>
+      <div class="px-6 py-4 flex justify-between items-center">
+        <a href="{% url 'addProduct:edit_food' food.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
+        <a href="{% url 'detailMakananfix:product_detail' food.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</button>
+        <form action="{% url 'addProduct:delete_food' food.id %}" method="post" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
+        </form>
+      </div>    
+    </div>
     {% endfor %}
-</ul>
+  </div>
+
+  <!-- Empty State -->
+  {% if not foods %}
+  <div class="text-center py-10">
+    <p class="text-gray-500">No food data available.</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+    async function getFoodEntries() {
+    try {
+        const response = await fetch("{% url 'addProduct:show_json' %}");
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching food entries:", error);
+    }
+}
+
+// Function to add a new food entry
+async function addFoodEntry() {
+    const form = document.getElementById('foodForm');
+    const formData = new FormData(form);
+
+    const submitButton = document.querySelector('[form="foodForm"]');
+    submitButton.disabled = true;
+
+    try {
+        // Send form data using POST method
+        const response = await fetch("{% url 'addProduct:add_food' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        });
+
+        const data = await response.json();
+        console.log("Server Response After Adding Food:", data); // Debug to ensure successful response
+
+        if (response.ok && data.success) {
+            form.reset(); // Reset form if successful
+            hideFoodModal(); // Close modal
+            refreshFoodEntries(); // Refresh food list after success
+        } else if (!data.success && data.errors) {
+            console.error("Form Validation Errors:", data.errors); // Show validation errors
+        } else {
+            console.error("Unknown error during form submission.");
+        }
+    } catch (error) {
+        console.error("Error submitting form:", error); // Handle network errors
+    } finally {
+        submitButton.disabled = false; // Re-enable submit button after submission
+    }
+}
+
+// Function to refresh food entries
+async function refreshFoodEntries() {
+    try {
+        const foodEntries = await getFoodEntries(); // Fetch food data from server
+        let htmlString = ""; // Initialize HTML string
+
+        if (foodEntries.length === 0) {
+            htmlString = `<div class="text-center py-10"><p class="text-gray-500">No food data available.</p></div>`;
+        } else {
+            foodEntries.forEach(food => {
+                // Create HTML for each food item fetched from the database
+                htmlString += `
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <div class="p-4">
+                            <img src="${food.fields.image_url || 'default-image.jpg'}" alt="${food.fields.name}" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="px-6 py-4">
+                            <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">${food.fields.preference}</span>
+                            <h3 class="text-lg font-semibold mt-2">${food.fields.name}</h3>
+                            <p class="text-gray-600 mt-1">Rp.${food.fields.price}</p>
+                            <p class="text-sm text-gray-500">${food.fields.restaurant}</p>
+                            <p class="text-sm text-gray-500 mt-2">${food.fields.deskripsi}</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <a href="/edit-food/${food.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
+                            <a href="/product-detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+                            <form action="/delete-food/${food.pk}" method="post" class="inline">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Update content inside the element with id "food_entry_list"
+        document.getElementById("food_entry_list").innerHTML = htmlString;
+
+    } catch (error) {
+        console.error("Error in refreshing food entries:", error);
+    }
+}
+
+// Event listener for form submission when the page finishes loading
+document.addEventListener("DOMContentLoaded", () => {
+    refreshFoodEntries(); // Load the food entries when the page loads
+
+    // Ensure the form is only submitted once when the submit button is clicked
+    document.getElementById("foodForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        addFoodEntry(); // Call addFoodEntry function when the form is submitted
+    });
+});
+
+// Function to open the modal form
+function showFoodModal() {
+    document.getElementById('foodModal').classList.remove('hidden');
+    document.getElementById('foodModalContent').classList.remove('opacity-0', 'scale-95');
+    document.getElementById('foodModalContent').classList.add('opacity-100', 'scale-100');
+}
+
+// Function to close the modal form
+function hideFoodModal() {
+    document.getElementById('foodModalContent').classList.remove('opacity-100', 'scale-100');
+    document.getElementById('foodModalContent').classList.add('opacity-0', 'scale-95');
+    setTimeout(() => document.getElementById('foodModal').classList.add('hidden'), 150);
+}
+</script>
+{% endblock content %}

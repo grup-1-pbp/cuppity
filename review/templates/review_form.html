@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-2xl font-medium mb-4">
+        {% if review %}
+            Edit Review
+        {% else %}
+            Write a Review!
+        {% endif %}
+    </h1>
+
+    <form method="post" class="max-w-md">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label class="block text-gray-800 text-sm mb-2">
+                Rating (1-5)
+            </label>
+            <div class="star-rating mb-1">
+                <input type="radio" id="star5" name="rating" value="5" {% if form.rating.value == 5 %}checked{% endif %}>
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4" {% if form.rating.value == 4 %}checked{% endif %}>
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3" {% if form.rating.value == 3 %}checked{% endif %}>
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2" {% if form.rating.value == 2 %}checked{% endif %}>
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1" {% if form.rating.value == 1 %}checked{% endif %}>
+                <label for="star1">★</label>
+            </div>
+            {% if form.rating.errors %}
+                <p class="text-red-500 text-xs mt-1">{{ form.rating.errors }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-800 text-sm mb-2">
+                Your Review
+            </label>
+            {{ form.comment }}
+            {% if form.comment.errors %}
+                <p class="text-red-500 text-xs mt-1">{{ form.comment.errors }}</p>
+            {% endif %}
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded focus:outline-none">
+                {% if review %}Update Review{% else %}Submit Review{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #ccc;
+    padding: 0;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffb400;
+}
+
+.container {
+    background-color: #fafafa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+form {
+    background-color: #fff;
+    padding: 1rem;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+}
+</style>
+{% endblock %}
