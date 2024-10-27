@@ -11,6 +11,15 @@
 <h2> {{ bookmark.liked }}</h2>
 
 
+<style>
+  .filter-btn.active {
+      background-color: #d1d5db; /* Grey background when active */
+      color: #1f2937; /* Darker text when active */
+  }
+  .filter-btn {
+      transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  }
+</style>
 
 <div class="mt-6 flex justify-between items-center">
   <div class="space-x-4">
@@ -26,7 +35,7 @@
     Logout
   </a>
 </div>
-  
+
 
 <div class="mt-6 mb-4">
   {% if account.role == 'seller' %}
@@ -39,14 +48,23 @@
       <div class="container mx-auto p-6">
         <h1 class="text-3xl font-bold text-gray-800 mb-4">Hello, {{ account.user }}</h1>
   
+  <!-- Search bar -->
+  <div class="mt-4 mb-6">
+    <input type="text" id="foodSearch" class="w-full p-3 border border-gray-300 rounded-md" placeholder="Search for food...">
+  </div>
+
+
+
+
   <!-- Categories Filter -->
   <div class="flex space-x-4 mb-6">
-    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Indonesian</button>
-    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Chinese</button>
-    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Western</button>
-    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Japanese</button>
-    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full">Indian</button>
-  </div>
+    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full filter-btn" data-filter="">All</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full filter-btn" data-filter="Indonesia">Indonesian</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full filter-btn" data-filter="Chinese">Chinese</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full filter-btn" data-filter="Western">Western</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full filter-btn" data-filter="Japanese">Japanese</button>
+    <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full filter-btn" data-filter="Indian">Indian</button>
+</div>
 
   <!-- Button to trigger the modal -->
 
@@ -146,119 +164,156 @@
 </div>
 
 <script>
-    async function getFoodEntries() {
-    try {
-        const response = await fetch("{% url 'main:show_json' %}");
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching food entries:", error);
-    }
-}
+  const userRole = "{{ account.role }}";
+  async function getFoodEntries() {
+      try {
+          const response = await fetch("{% url 'main:show_json' %}");
+          return await response.json();
+      } catch (error) {
+          console.error("Error fetching food entries:", error);
+      }
+  }
 
-// Function to add a new food entry
-async function addFoodEntry() {
-    const form = document.getElementById('foodForm');
-    const formData = new FormData(form);
+  // Function to refresh food entries
+  async function refreshFoodEntries() {
+      await filterFoodEntries(); // Load all food entries by default
+  }
 
-    const submitButton = document.querySelector('[form="foodForm"]');
-    submitButton.disabled = true;
+  // Event listener for form submission when the page finishes loading
+  document.addEventListener("DOMContentLoaded", () => {
+      refreshFoodEntries(); // Load the food entries when the page loads
 
-    try {
-        // Send form data using POST method
-        const response = await fetch("{% url 'addProduct:add_food' %}", {
-            method: "POST",
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        });
+      // Ensure the form is only submitted once when the submit button is clicked
+      document.getElementById("foodForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+          addFoodEntry(); // Call addFoodEntry function when the form is submitted
+      });
 
-        const data = await response.json();
-        console.log("Server Response After Adding Food:", data); // Debug to ensure successful response
+      // Search functionality
+      const searchInput = document.getElementById("foodSearch");
+      searchInput.addEventListener("keyup", () => {
+          const searchTerm = searchInput.value.toLowerCase();
+          filterFoodEntries(searchTerm);
+      });
 
-        if (response.ok && data.success) {
-            form.reset(); // Reset form if successful
-            hideFoodModal(); // Close modal
-            refreshFoodEntries(); // Refresh food list after success
-        } else if (!data.success && data.errors) {
-            console.error("Form Validation Errors:", data.errors); // Show validation errors
-        } else {
-            console.error("Unknown error during form submission.");
-        }
-    } catch (error) {
-        console.error("Error submitting form:", error); // Handle network errors
-    } finally {
-        submitButton.disabled = false; // Re-enable submit button after submission
-    }
-}
+      // Filter by category and manage active button state
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      filterButtons.forEach(button => {
+          button.addEventListener("click", () => {
+              // Remove "active" class from all buttons
+              filterButtons.forEach(btn => btn.classList.remove("active"));
 
-// Function to refresh food entries
-async function refreshFoodEntries() {
-    try {
-        const foodEntries = await getFoodEntries(); // Fetch food data from server
-        let htmlString = ""; // Initialize HTML string
+              // Add "active" class to the clicked button
+              button.classList.add("active");
 
-        if (foodEntries.length === 0) {
-            htmlString = `<div class="text-center py-10"><p class="text-gray-500">No food data available.</p></div>`;
-        } else {
-            foodEntries.forEach(food => {
-                // Create HTML for each food item fetched from the database
-                htmlString += `
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="p-4">
-                            <img src="${food.fields.image_url || 'default-image.jpg'}" alt="${food.fields.name}" class="w-full h-48 object-cover">
-                        </div>
-                        <div class="px-6 py-4">
-                            <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">${food.fields.preference}</span>
-                            <h3 class="text-lg font-semibold mt-2">${food.fields.name}</h3>
-                            <p class="text-gray-600 mt-1">Rp.${food.fields.price}</p>
-                            <p class="text-sm text-gray-500">${food.fields.restaurant}</p>
-                            <p class="text-sm text-gray-500 mt-2">${food.fields.deskripsi}</p>
-                        </div>
-                        <div class="px-6 py-4 flex justify-between items-center">
-                            <a href="/edit-food/${food.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
-                            <a href="/detailmakanan/product-detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
-                            <form action="/delete-food/${food.pk}" method="post" class="inline">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+              const category = button.getAttribute("data-filter");
+              filterFoodEntries('', category);
+          });
+      });
+  });
 
-        // Update content inside the element with id "food_entry_list"
-        document.getElementById("food_entry_list").innerHTML = htmlString;
+  // Function to add a new food entry
+  async function addFoodEntry() {
+      const form = document.getElementById('foodForm');
+      const formData = new FormData(form);
+      const submitButton = document.querySelector('[form="foodForm"]');
+      submitButton.disabled = true;
 
-    } catch (error) {
-        console.error("Error in refreshing food entries:", error);
-    }
-}
+      try {
+          const response = await fetch("{% url 'addProduct:add_food' %}", {
+              method: "POST",
+              body: formData,
+              headers: {
+                  'X-CSRFToken': '{{ csrf_token }}'
+              }
+          });
 
-// Event listener for form submission when the page finishes loading
-document.addEventListener("DOMContentLoaded", () => {
-    refreshFoodEntries(); // Load the food entries when the page loads
+          const data = await response.json();
 
-    // Ensure the form is only submitted once when the submit button is clicked
-    document.getElementById("foodForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        addFoodEntry(); // Call addFoodEntry function when the form is submitted
-    });
-});
+          if (response.ok && data.success) {
+              form.reset(); // Reset form if successful
+              hideFoodModal(); // Close modal
+              refreshFoodEntries(); // Refresh food list after success
+          } else if (!data.success && data.errors) {
+              console.error("Form Validation Errors:", data.errors); // Show validation errors
+          } else {
+              console.error("Unknown error during form submission.");
+          }
+      } catch (error) {
+          console.error("Error submitting form:", error); // Handle network errors
+      } finally {
+          submitButton.disabled = false; // Re-enable submit button after submission
+      }
+  }
 
-// Function to open the modal form
-function showFoodModal() {
-    document.getElementById('foodModal').classList.remove('hidden');
-    document.getElementById('foodModalContent').classList.remove('opacity-0', 'scale-95');
-    document.getElementById('foodModalContent').classList.add('opacity-100', 'scale-100');
-}
+  // Fetch and filter function with buttons included
+  async function filterFoodEntries(searchTerm = '', category = '') {
+      try {
+          const response = await fetch("{% url 'main:show_json' %}");
+          const foods = await response.json();
+          let filteredFoods = foods;
 
-// Function to close the modal form
-function hideFoodModal() {
-    document.getElementById('foodModalContent').classList.remove('opacity-100', 'scale-100');
-    document.getElementById('foodModalContent').classList.add('opacity-0', 'scale-95');
-    setTimeout(() => document.getElementById('foodModal').classList.add('hidden'), 150);
-}
+          if (searchTerm) {
+              filteredFoods = filteredFoods.filter(food =>
+                  food.fields.name.toLowerCase().includes(searchTerm)
+              );
+          }
+
+          if (category) {
+              filteredFoods = filteredFoods.filter(food =>
+                  category === '' || food.fields.preference === category
+              );
+          }
+
+          let htmlString = "";
+          filteredFoods.forEach(food => {
+              htmlString += `
+                  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                      <div class="p-4">
+                          <img src="${food.fields.image_url}" alt="${food.fields.name}" class="w-full h-48 object-cover">
+                      </div>
+                      <div class="px-6 py-4">
+                          <span class="inline-block bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">${food.fields.preference}</span>
+                          <h3 class="text-lg font-semibold mt-2">${food.fields.name}</h3>
+                          <p class="text-gray-600 mt-1">Rp.${food.fields.price}</p>
+                          <p class="text-sm text-gray-500">${food.fields.restaurant}</p>
+                          <p class="text-sm text-gray-500 mt-2">${food.fields.deskripsi}</p>
+                      </div>
+                      ${userRole == 'seller'?`<div class="px-6 py-4 flex justify-between items-center">
+                          <a href="/edit-food/${food.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a>
+                          <a href="/detailmakanan/product-detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+                          <form action="/delete-food/${food.pk}" method="post" class="inline">
+                              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                              <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Delete</button>
+                          </form>
+                      </div>`:`<div class="px-6 py-4 flex justify-between items-center">
+                  
+                          <a href="/detailmakanan/product-detail/${food.pk}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+                        
+                      </div>`}
+                  </div>`;
+          });
+
+          document.getElementById("food_entry_list").innerHTML = htmlString;
+
+      } catch (error) {
+          console.error("Error filtering food entries:", error);
+      }
+  }
+
+  // Function to open the modal form
+  function showFoodModal() {
+      document.getElementById('foodModal').classList.remove('hidden');
+      document.getElementById('foodModalContent').classList.remove('opacity-0', 'scale-95');
+      document.getElementById('foodModalContent').classList.add('opacity-100', 'scale-100');
+  }
+
+  // Function to close the modal form
+  function hideFoodModal() {
+      document.getElementById('foodModalContent').classList.remove('opacity-100', 'scale-100');
+      document.getElementById('foodModalContent').classList.add('opacity-0', 'scale-95');
+      setTimeout(() => document.getElementById('foodModal').classList.add('hidden'), 150);
+  }
 </script>
+
 {% endblock content %}
