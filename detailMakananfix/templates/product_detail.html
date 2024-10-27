@@ -172,12 +172,37 @@
         </a>
     </div>
 
-    <script>
+    <!-- <script>
         function toggleLike() {
             var likeBtn = document.getElementById("likeBtn");
             likeBtn.classList.toggle("liked");
         }
+    </script> -->
+
+    <script>
+        function toggleLike(foodId) {
+            const likeBtn = document.getElementById("likeBtn");
+            const likeIcon = document.getElementById("likeIcon");
+    
+            fetch(`/like/${foodId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure CSRF token is available
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    likeIcon.classList.add("liked");
+                } else {
+                    likeIcon.classList.remove("liked");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     </script>
+    
 
 </body>
 </html>

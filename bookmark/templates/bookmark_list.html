@@ -1,54 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Saved Foods</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .food-item {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-        .food-item:last-child {
-            border-bottom: none;
-        }
-        .food-item h2 {
-            color: #555;
-        }
-        .food-item img {
-            width: 100px;
-            height: auto;
-            border-radius: 8px;
-        }
-        .food-details {
-            display: flex;
-            align-items: center;
-        }
-        .food-details div {
-            margin-left: 15px;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>My Saved Foods</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        width: 90%;
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    .food-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+    .food-item:last-child {
+        border-bottom: none;
+    }
+    .food-item h2 {
+        color: #555;
+    }
+    .food-item img {
+        width: 100px;
+        height: auto;
+        border-radius: 8px;
+    }
+    .food-details {
+        display: flex;
+        align-items: center;
+    }
+    .food-details div {
+        margin-left: 15px;
+    }
+</style>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
     <div class="container">
         <h1>My Saved Foods</h1>
         {% if liked_foods %}
@@ -68,5 +68,4 @@
             <p>You have no saved foods in your bookmark yet.</p>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock content %}

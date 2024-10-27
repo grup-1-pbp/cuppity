@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
 
-app_name = 'bookmarks'  
+app_name = 'bookmark'  
 
 urlpatterns = [
-    path('like/<uuid:food_id>/', views.toggle_like, name='toggle_like'),
-    path('bookmark/', views.bookmark_list, name='bookmark_list'),
+    path('like/<uuid:id>/', views.like_bookmark, name='like_bookmark'),
+    path('', views.bookmark_list, name='bookmark_list'),
+    
 ]

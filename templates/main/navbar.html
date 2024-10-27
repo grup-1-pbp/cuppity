@@ -13,6 +13,106 @@
               </svg>
           </button>
       </div>
+<<<<<<< HEAD
+  
+      <!-- Links (Desktop) -->
+      <div class="hidden md:flex space-x-8">
+        <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Home</a>
+        <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">My Profile</a>
+        <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Add Food</a>
+        <!-- Bookmarks Link -->
+        <a href="#" id="bookmarks-link" class="text-white font-semibold hover:text-[#9F5F44]">Bookmarks</a>
+      </div>
+  
+      <!-- Search Bar -->
+      <div class="hidden md:flex items-center bg-white rounded-full px-3 py-2">
+        <input type="text" placeholder="Search" class="bg-transparent outline-none text-black px-2">
+        <button>
+          <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 19l-5.2-5.2a7.5 7.5 0 10-1.4 1.4L19 21l2-2zM10 17a7 7 0 110-14 7 7 0 010 14z"></path>
+          </svg>
+        </button>
+      </div>
+  
+      <!-- Profile Icon -->
+      <div class="flex items-center space-x-4">
+        <img src="https://your-profile-url-here.jpg" alt="Profile" class="w-10 h-10 rounded-full">
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-white" id="menu-toggle">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Mobile Menu (Hidden by default) -->
+    <div class="md:hidden mt-4 hidden" id="mobile-menu">
+      <a href="#" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">Home</a>
+      <a href="#" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">My Profile</a>
+      <a href="#" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">Add Food</a>
+      <div class="bg-white rounded-full px-3 py-2 mt-2">
+        <input type="text" placeholder="Search" class="bg-transparent outline-none text-black px-2 w-full">
+      </div>
+    </div>
+
+    <div id="bookmarks" class="hidden mt-4">
+      <h3 class="text-white font-semibold">Bookmarks</h3>
+      <ul id="bookmarks-list" class="text-white">
+          {% for bookmark in bookmarks %}
+              <li>{{ bookmark.food.name }} - {{ bookmark.food.restaurant }}</li>
+          {% empty %}
+              <li>Tidak ada bookmark tersedia.</li>
+          {% endfor %}
+      </ul>
+    </div>
+
+
+    
+    <!-- Bookmarks Section (Hidden by default)
+    <div id="bookmarks" class="hidden md:block mt-4">
+        <h3 class="text-white font-semibold">Bookmarks</h3>
+        <ul id="bookmarks-list" class="text-white">
+        </ul>
+    </div> -->
+
+  </nav>
+  
+  <script>
+    const bookmarks = [];
+
+// Function to add bookmarks
+    function addBookmark(item) {
+        bookmarks.push(item);
+        displayBookmarks();
+    }
+
+    // Function to display bookmarks
+    function displayBookmarks() {
+        const bookmarksList = document.getElementById('bookmarks-list');
+        bookmarksList.innerHTML = '';
+        bookmarks.forEach((bookmark, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerText = bookmark;
+            bookmarksList.appendChild(listItem);
+        });
+    }
+
+
+    // Toggle mobile menu visibility
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    document.getElementById('bookmarks-link').addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById('bookmarks').classList.toggle('hidden');
+    });
+
+
+  </script>
+  
+=======
       <!-- Navbar links -->
       <div class="hidden w-full md:flex md:w-auto" id="navbar-menu">
           <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
@@ -32,3 +132,4 @@
       </div>
   </div>
 </nav>
+>>>>>>> vico/autentifikasi

@@ -1,4 +1,3 @@
-
 from django.urls import path
 from . import views
 from addProduct.views import add_food, edit_food, delete_food
@@ -11,4 +10,3 @@ urlpatterns = [
     path('edit-food/<uuid:id>', views.edit_food, name='edit_food'),  # Using UUID
     path('delete-food/<uuid:id>', views.delete_food, name='delete_food'),  # Using UUID
 ]
-

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Bookmark</title>
+</head>
+<body>
+    <h1>Bookmarks</h1>
+    <ul id="bookmarkList">
+        {% for bookmark in bookmarks %}
+            <li id="bookmark-{{ bookmark.id }}">
+                {{ bookmark.food.name }} - {{ bookmark.food.restaurant }}
+                <button onclick="removeBookmark('{{ bookmark.id }}')">Remove</button>
+            </li>
+        {% empty %}
+            <li id="no-bookmark">Tidak ada bookmark tersedia.</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+    function removeBookmark(bookmarkId) {
+        fetch(`{% url 'bookmarks:delete_bookmark' 0 %}`.replace('0', bookmarkId), {
+            method: 'POST', // Assuming you are using POST requests
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove the bookmark element from the list
+                const bookmarkElement = document.getElementById(`bookmark-${bookmarkId}`);
+                bookmarkElement.parentNode.removeChild(bookmarkElement);
+                checkEmptyList();
+            } else {
+                console.error('Failed to delete the bookmark');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function checkEmptyList() {
+        const list = document.getElementById("bookmarkList");
+        if (list.children.length === 0) {
+            list.innerHTML = `<li id="no-bookmark">Tidak ada bookmark tersedia.</li>`;
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+</body>
+</html>

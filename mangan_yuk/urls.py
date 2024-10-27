@@ -10,8 +10,10 @@ urlpatterns = [
     path('', include('autentifikasi.urls',namespace='autentifikasi')),
     path('', include('main.urls',namespace='main')),
     path('review/', include('review.urls', namespace='review')),
-    path('', include('bookmark.urls', namespace='bookmark')),
+    path('bookmark/', include('bookmark.urls', namespace='bookmark')),
     path('', include('homepage.urls', namespace='homepage')) ,
 ]
+    
+
     
 
