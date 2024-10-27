@@ -41,7 +41,7 @@ SECRET_KEY = 'django-insecure-gses-ufdytl&)dgnxyp70s$*_ptww(!s4u%b@=t2@ew*4o*(-8
 PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", ]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "mangan-yuk-production.up.railway.app" ]
 
 
 # Application definition
