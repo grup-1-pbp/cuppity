@@ -1,7 +1,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import FoodForm
-from .models import Food
+from main.models import Food
 from django.contrib.auth.decorators import login_required
 from autentifikasi.decorators import role_required
 from django.views.decorators.csrf import csrf_exempt

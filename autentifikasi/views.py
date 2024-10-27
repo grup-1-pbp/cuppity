@@ -83,3 +83,7 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('autentifikasi:login'))
     response.delete_cookie('last_login')
     return response
+
+def show_profile(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    return render(request, 'show_profile.html', {'profile': profile})

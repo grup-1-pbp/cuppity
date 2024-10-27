@@ -56,8 +56,9 @@ INSTALLED_APPS = [
     'addProduct',
     'detailmakanan',
     'autentifikasi',
-    
-    
+    'review',
+    'bookmark',
+    'homepage',
 ]
 
 MIDDLEWARE = [

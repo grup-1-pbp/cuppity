@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Back Button -->
+    <button onclick="window.history.back()" 
+            class="bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded mb-6">
+        ← Back
+    </button>
+    
+    <!-- Review Form -->
+    <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h2 class="text-2xl font-bold mb-4">Write a Review</h2>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Rating Input -->
+            <div class="star-rating flex justify-end mb-4">
+                {% for i in "54321"|make_list %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required>
+                    <label for="star{{ i }}">★</label>
+                {% endfor %}
+            </div>
+
+            <!-- Comment Input -->
+            <div>
+                <textarea name="comment" rows="4" class="w-full p-2 border rounded" 
+                          placeholder="Write your review..." required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="bg-[#F0C868] hover:bg-[#e0b85c] text-black py-2 px-4 rounded font-bold">
+                Submit Review
+            </button>
+        </form>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="reviews-list">
+        <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+        {% for review in reviews %}
+            <div class="bg-white p-6 rounded-lg shadow mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div>
+                        <div class="font-bold">
+                            {{ review.user.username|default:"Anonymous" }}
+                        </div>
+                        <div class="text-gray-500 text-sm">
+                            {{ review.created_at|date:"F d, Y" }}
+                        </div>
+                    </div>
+                    <div class="flex">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= review.rating %}
+                                <span class="text-[#F0C868]">★</span>
+                            {% else %}
+                                <span class="text-gray-300">★</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-700">{{ review.comment }}</p>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Styling -->
+<style>
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        cursor: pointer;
+        font-size: 2em;
+        color: #ccc;
+    }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #F0C868;
+    }
+
+    button {
+        transition: background-color 0.3s ease;
+    }
+</style>
+{% endblock %}
