@@ -4,6 +4,7 @@ from .forms import UserRegisterForm, EditProfileForm
 from .models import Profile
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -28,16 +29,21 @@ def login_user(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)  # Hanya POST data, karena tidak ada FILES
+        form = UserCreationForm(request.POST)  # Hanya POST data, karena tidak ada FILES
+        print(request.POST.get('role'))
         if form.is_valid():
             user = form.save()
-            if not Profile.objects.filter(user=user).exists():
-                profile = Profile.objects.create(
-                    user=user,
-                    role=form.cleaned_data.get('role'),
-                    budget=form.cleaned_data.get('budget'),
-                    profile_image=form.cleaned_data.get('profile_image')  # Menyimpan URL sebagai teks
-                )
+            print("a")
+            print(user)
+            profile = Profile.objects.create(
+                user=user,
+                role=request.POST.get('role'),
+                budget=request.POST.get('budget'),
+                profile_image=request.POST.get('profile_image')  # Menyimpan URL sebagai teks
+                
+            )
+            profile.save()
+   
             messages.success(request, 'Your account has been successfully created!')
             return redirect('autentifikasi:login')
     else:
