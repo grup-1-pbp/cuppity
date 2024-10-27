@@ -118,4 +118,5 @@ Dataset ini diperoleh dari hasil proses pengambilan data (scraping) makanan pada
 
 https://docs.google.com/spreadsheets/d/1EfaPKBR3PJBr2Co7Fe3BWvsz03EufzYwf5U5pksvyM4/edit?usp=sharing 
 
-
+## link deployment ##
+https://mangan-yuk-production.up.railway.app
