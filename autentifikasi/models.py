@@ -12,4 +12,17 @@ class Profile(models.Model):
     profile_image = models.URLField(max_length=500, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.role}'
+        return self.user
+    
+    def clean_role(self):
+        role = self.cleaned_data['role']
+        return role
+    
+    def clean_budget(self):
+        budget = self.cleaned_data['budget']
+        return budget
+    
+
+    def clean_image_url(self):
+        profile_image = self.cleaned_data['profile_image']
+        return profile_image

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+
+        .profile-container {
+            background-color: #fff;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .profile-info {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .budget {
+            display: inline-block;
+            font-weight: bold;
+            color: #fff;
+            background-color: #28a745;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+            text-align: center;
+        }
+
+        .role-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .role-icon {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <!-- Profile Image -->
+    <div class="profile-image">
+        <img src="{{ profile.profile_image.url }}" alt="{{ profile.user }}">
+    </div>
+
+    <!-- User's Name -->
+    <h1>Hello, {{ profile.user }}!</h1>
+
+    <!-- Profile Information -->
+    <div class="profile-info">
+        <!-- Budget Display -->
+        <p><strong>Budget:</strong> <span class="budget">${{ profile.budget }}</span></p>
+
+        <!-- Role with Icon -->
+        <div class="role-container">
+            <strong>Role:</strong>
+            {% if profile.role == "buyer" %}
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtV924HDINEPVkawWej-d6alSo8Z4b6YiiZg&s" alt="Buyer Icon" class="role-icon"> Buyer
+            {% elif profile.role == "seller" %}
+                <img src="https://img.freepik.com/free-vector/street-seller-illustration_1284-11371.jpg" alt="Seller Icon" class="role-icon"> Seller
+            {% else %}
+                {{ profile.role }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

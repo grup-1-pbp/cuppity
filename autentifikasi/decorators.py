@@ -1,5 +1,5 @@
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404
 from .models import Profile
 
 def role_required(role):
@@ -9,6 +9,7 @@ def role_required(role):
             if profile.role == role:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponseForbidden("You are not authorized to access this page.")
+                # Render a custom 403 forbidden page
+                return render(request, '403.html', status=403)
         return _wrapped_view
     return decorator

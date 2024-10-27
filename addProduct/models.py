@@ -20,6 +20,28 @@ class Food(models.Model):
     def __str__(self):
         return self.name
     
+    
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        return name
+    
+    def clean_price(self):
+        price = self.cleaned_data['price']
+        return price
+    
+    def clean_deskripsi(self):
+        deskripsi = self.cleaned_data['deskripsi']
+        return deskripsi
+    def clean_restaurant(self):
+        restaurant = self.cleaned_data['restaurant']
+        return restaurant
+    def clean_preference(self):
+        preference = self.cleaned_data['preference']
+        return preference
+    def clean_image_url(self):
+        image_url = self.cleaned_data['image_url']
+        return image_url
+
     def clean_name(self):
         name = self.cleaned_data['name']
         return name

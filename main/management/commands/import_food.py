@@ -1,12 +1,12 @@
 import csv
 from django.core.management.base import BaseCommand
-from addProduct.models import Food
+from main.models import Food
 
 class Command(BaseCommand):
     help = 'Import food data from CSV'
 
     def handle(self, *args, **kwargs):
-        with open("C:\\Users\\MyBook Z Series\\Documents\\pbp\\mangan-yuk\\dataset.csv", newline='', encoding='utf-8') as csvfile:
+        with open("C:\\Users\\MyBook Z Series\\Documents\\latihan\\mangan-yuk-fix\\mangan-yuk\\dataset.csv", newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 Food.objects.create(
