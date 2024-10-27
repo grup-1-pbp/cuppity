@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Mangan Yuk!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Default transparent navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: transparent;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 60px;
+            flex-wrap: nowrap;
+            transition: background-color 0.5s ease; /* Smooth transition */
+        }
+
+        /* Solid navbar when scrolled */
+        .navbar.solid {
+            background-color: #fff;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #9F5F44;
+            min-width: 150px; 
+        }
+
+        .navbar-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            left: -20px;
+        }
+
+        .address-btn {
+            padding: 10px 15px;
+            background-color: #9F5F44;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            white-space: nowrap; 
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .auth-buttons a {
+            text-decoration: none;
+            color: #9F5F44;
+            font-weight: bold;
+        }
+
+        .auth-buttons .signup {
+            padding: 8px 12px;
+            background-color: #F0C868;
+            color: #9F5F44;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            background-image: url('{% static "images/jogja.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .welcome-text {
+            position: relative;
+            font-size: 3em;
+            color: #F0C868;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+            white-space: nowrap;
+            margin-bottom: 10px;
+        }
+
+        .brief-section {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px 40px;
+            color: #444;
+            font-size: 1.1em;
+            line-height: 1.5;
+            max-width: 800px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* Food Grid Section */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+            padding: 40px 20px;
+            background-color: #f5f5f5;
+        }
+
+        @media (min-width: 768px) {
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .food-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .food-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .food-card-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .food-card-content h3 {
+            color: #9F5F44;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .food-card-content p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .food-card-content .price {
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">Mangan Yuk!</div>
+        <div class="navbar-content">
+            <div class="auth-buttons">
+                <a href="login/" class="login">Log in</a>
+                <a href="register/" class="signup">Sign up</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="welcome-text">Welcome to Mangan Yuk!</div>
+        <div class="brief-section">
+            “MANGAN YUK!” hadir untuk membantu masyarakat memamerkan kelezatan masakan mereka dan mempromosikan makanan lokal kepada seluruh pengunjung Yogyakarta.
+        </div>
+    </div>
+
+    <div class="food-grid">
+        {% for food in foods %}
+        <div class="food-card">
+            <img src="{{ food.image_url }}" alt="{{ food.name }}">
+            <div class="food-card-content">
+                <h3>{{ food.name }}</h3>
+                <p class="price">Rp.{{ food.price }}</p>
+                <p>{{ food.restaurant }}</p>
+                <p>{{ food.deskripsi }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript to handle transparent-to-solid navbar effect on scroll
+        window.addEventListener("scroll", function() {
+            var navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("solid");
+            } else {
+                navbar.classList.remove("solid");
+            }
+        });
+    </script>
+</body>
+</html>

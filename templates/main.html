@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Mangan Yuk!{% endblock %}
+
+{% block content %}
+<header style="text-align: center; margin-bottom: 40px;">
+    <h1 style="color: #F0C868;">Welcome to <strong>Mangan Yuk!</strong></h1>
+    <p style="font-size: 18px; color: #333;">mangan mangan mangan mangan mangan!</p>
+</header>
+
+<div class="content" style="max-width: 600px; margin: auto; background-color: #9F5F44; padding: 30px; border-radius: 10px; color: white;">
+    <h2 style="text-align: left;">User Information</h2>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Member since:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+    <a href="{% url 'main:logout' %}" class="button" style="background-color: #F0C868; color: #9F5F44; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-top: 20px;">Logout</a>
+</div>
+
+{% endblock %}
