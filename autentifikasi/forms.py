@@ -4,17 +4,38 @@ from .models import Profile
 from django.contrib.auth.models import User
 
 class UserRegisterForm(UserCreationForm):
-    ROLE_CHOICES = [
-        ('buyer', 'Buyer'),
-        ('seller', 'Seller'),
-    ]
-    role = forms.ChoiceField(choices=ROLE_CHOICES)
+    role = forms.ChoiceField(choices=Profile.ROLE_CHOICES)
     budget = forms.IntegerField(required=False, label="Budget")
-    profile_image = forms.URLField(required=False, label="Profile Image URL")  # Menggunakan URLField
+    profile_image = forms.URLField(required=False, label="Profile Image URL")
 
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'role', 'budget', 'profile_image']
+        # Password1 dan password2 sudah ada dari UserCreationForm
+        # Role tidak perlu di fields karena sudah didefinisikan sebagai form field
+        fields = ['username', 'password1', 'password2']  
+
+    def __init__(self, *args, **kwargs):
+        profile = kwargs.pop('profile', None)
+        super(UserRegisterForm, self).__init__(*args, **kwargs)
+        if profile:
+            self.fields['role'].initial = profile.role
+            self.fields['budget'].initial = profile.budget
+            self.fields['profile_image'].initial = profile.profile_image
+
+    def save(self, commit=True):
+        user = super().save(commit=True)
+        if commit:
+            # user.save()
+            # Buat Profile setelah user disave
+            Profile.objects.create(
+                user=user,
+                role=self.cleaned_data['role'],  # Ambil dari cleaned_data
+                budget=self.cleaned_data.get('budget', 0),
+                profile_image=self.cleaned_data.get('profile_image', '')
+            )
+        return user
+
+   
 
 class EditProfileForm(forms.ModelForm):
     role = forms.ChoiceField(choices=Profile.ROLE_CHOICES)

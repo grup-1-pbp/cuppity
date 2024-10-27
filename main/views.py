@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from autentifikasi.models import Profile
-from addProduct.models import Food
+from .models import Food
 from django.utils.html import strip_tags
 from django.http import HttpResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from autentifikasi.decorators import role_required
+from autentifikasi.models import Profile
 # Create your views here.
 
-
+@login_required(login_url='/homepage')
 def home(request):
     if request.user.is_authenticated:
         try:
@@ -29,10 +30,10 @@ def home(request):
             'deskripsi': strip_tags(food.deskripsi),
             'image_url': strip_tags(food.image_url) if food.image_url else None
         })
-    
+    account = Profile.objects.get(user=request.user) 
     context = {
         'account' : account,
-        'foods': sanitized_foods
+        'foods': sanitized_foods,
     }
     return render(request, 'home.html', context)
 
