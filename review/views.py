@@ -1,12 +1,12 @@
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import  Review
+from .models import Review 
 from main.models import Food
 from .forms import ReviewForm
 from django.contrib.auth.models import User  # Import user model
 from autentifikasi.decorators import role_required
 
-@role_required('buyer')
+# @role_required('buyer')
 def food_reviews(request, id):
     food = get_object_or_404(Food, id=id)
     reviews = food.food_reviews.all()  # Fetch all reviews related to this food
@@ -16,6 +16,7 @@ def food_reviews(request, id):
     avg_rating = sum(review.rating for review in reviews) / total_reviews if total_reviews > 0 else 0
 
     if request.method == "POST":
+        print(food)
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)

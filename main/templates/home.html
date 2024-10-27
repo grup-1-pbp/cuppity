@@ -138,7 +138,7 @@
       </div>
       <div class="px-6 py-4 flex justify-between items-center">
         <a href="{% url 'addProduct:edit_food' food.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Edit</a> 
-        <a href="{% url 'detailmakanan:product_detail' food.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
+        <a href="{% url 'detailMakananfix:product_detail' food.id %}" class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</a>
         <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Detail</button>
         
         <form action="{% url 'addProduct:delete_food' food.id %}" method="post" class="inline">

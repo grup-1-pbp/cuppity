@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.shortcuts import render
 from main.models import Food
 from django.utils.html import strip_tags
-
+import csv
+import os
 def show_main(request):
     foods = Food.objects.all()
     sanitized_foods = []
@@ -22,3 +24,16 @@ def show_main(request):
     }
 
     return render(request, "main.html", context)
+
+def fetch_food(request):
+        with open(os.path.join(settings.BASE_DIR, 'dataset.csv'), newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                Food.objects.create(
+                    name=row['Produk Makanan'],
+                    restaurant=row['Restoran'],
+                    deskripsi=row['Lokasi'],
+                    price=float(row['Harga']),
+                    preference=row['Preferensi'],
+                    image_url=row['URL_Gambar']
+                )

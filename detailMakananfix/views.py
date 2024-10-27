@@ -1,6 +1,6 @@
 # detailmakanan/views.py
 from django.shortcuts import render, get_object_or_404
-from addProduct.models import Food
+from main.models import Food
 from review.models import Review
 
 def product_detail(request, id):

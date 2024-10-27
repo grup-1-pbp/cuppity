@@ -14,21 +14,4 @@ class Profile(models.Model):
     profile_image = models.URLField(max_length=500, blank=True, null=True, default="https://tse3.mm.bing.net/th?id=OIP.lLmJV7N4bgAwEBtziWijSQHaJL&pid=Api&P=0&h=180")
 
     def __str__(self):
-<<<<<<< HEAD
-        return self.user
-    
-    def clean_role(self):
-        role = self.cleaned_data['role']
-        return role
-    
-    def clean_budget(self):
-        budget = self.cleaned_data['budget']
-        return budget
-    
-
-    def clean_image_url(self):
-        profile_image = self.cleaned_data['profile_image']
-        return profile_image
-=======
         return f'{self.user.username} - {self.role} '
->>>>>>> 4ec6ee82cc216c22286211278ee47103d8322124

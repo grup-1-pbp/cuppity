@@ -84,9 +84,8 @@
             transition: fill 0.3s ease;
         }
 
-        .liked .like-icon {
-            fill: red;
-            stroke: red;
+        .liked {
+            fill: red; /* Ubah warna saat disukai */
         }
 
         .price {
@@ -149,8 +148,8 @@
             <!-- Title and Like Button -->
             <div class="title-and-like">
                 <h1>{{ food.name }}</h1>
-                <button class="like-btn" id="likeBtn" onclick="toggleLike()">
-                    <svg id="likeIcon" class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button class="like-btn" onclick="toggleLike('{{ food.id }}')">
+                    <svg id="likeIcon" class="like-icon {% if food.id in liked_food_ids %}liked{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-.5.5-.5-.5a5.5 5.5 0 0 0-7.8 7.8l8.3 8.3 8.3-8.3a5.5 5.5 0 0 0 0-7.8z"></path>
                     </svg>
                 </button>
@@ -172,37 +171,28 @@
         </a>
     </div>
 
-    <!-- <script>
-        function toggleLike() {
-            var likeBtn = document.getElementById("likeBtn");
-            likeBtn.classList.toggle("liked");
-        }
-    </script> -->
-
     <script>
         function toggleLike(foodId) {
-            const likeBtn = document.getElementById("likeBtn");
-            const likeIcon = document.getElementById("likeIcon");
-    
-            fetch(`/like/${foodId}/`, {
+            console.log(foodId)
+            fetch(`/bookmark/like/${foodId}/`, {  
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure CSRF token is available
+                    'X-CSRFToken': '{{ csrf_token }}',  
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => response.json())
             .then(data => {
+                const likeIcon = document.getElementById('likeIcon');
                 if (data.liked) {
-                    likeIcon.classList.add("liked");
+                    likeIcon.classList.add("liked"); 
                 } else {
-                    likeIcon.classList.remove("liked");
+                    likeIcon.classList.remove("liked"); 
                 }
             })
             .catch(error => console.error('Error:', error));
         }
     </script>
-    
 
 </body>
 </html>

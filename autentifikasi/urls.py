@@ -14,5 +14,5 @@ urlpatterns = [
     path('home/show_profile', views.show_profile, name="show_profile"),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('show_profile', views.show_profile, name="show_profile"),
-    
+    path('bookmark/show_profile', views.show_profile, name="show_profile"),
 ]

@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Import food data from CSV'
 
     def handle(self, *args, **kwargs):
-        with open("C:\\Users\\MyBook Z Series\\Documents\\latihan\\mangan-yuk-fix\\mangan-yuk\\dataset.csv", newline='', encoding='utf-8') as csvfile:
+        with open("C:\Users\Peter\Desktop\mangan-yuk\dataset.csv", newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 Food.objects.create(
