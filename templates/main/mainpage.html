@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Mangan-Yuk Food List</title>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<!-- Header Section -->
+<header class="relative mt-6">
+    <img class="w-full h-60 object-cover rounded-lg" src="https://www.finedininglovers.com/sites/g/files/xknfdk626/files/2023-03/nasi%20goreng%C2%A9iStock.jpg" alt="Header Image">
+    <div class="absolute top-1/2 left-5 transform -translate-y-1/2 text-white">
+        <h1 class="text-3xl font-bold">Welcome Back, Blair!</h1>
+        <p class="text-lg">Ready to discover your next favorite dish?</p>
+    </div>
+</header>
+
+<!-- Category Buttons -->
+<nav class="flex justify-between mt-6 mb-4">
+    <button class="flex-1 py-2 mx-1 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium text-black">Indonesian</button>
+    <button class="flex-1 py-2 mx-1 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium text-black">Chinese</button>
+    <button class="flex-1 py-2 mx-1 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium text-black">Western</button>
+    <button class="flex-1 py-2 mx-1 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium text-black">Japanese</button>
+    <button class="flex-1 py-2 mx-1 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium text-black">Indian</button>
+</nav>
+
+<!-- Menu Section -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Loop through menu items -->
+    {% for item in food_items %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img class="w-full h-48 object-cover" src="{{ item.image_url }}" alt="{{ item.name }}">
+        <div class="p-4 text-center">
+            <h2 class="text-xl font-bold mb-2">{{ item.name }}</h2>
+            <p class="text-lg font-semibold mb-1">RP{{ item.price }}</p>
+            <p class="text-gray-500"><span class="mr-1">🍽️</span>{{ item.description }}</p>
+            <div class="mt-2 text-gray-600">
+                {{ item.rating }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock content %}

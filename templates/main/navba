@@ -1,0 +1,54 @@
+<nav class="bg-[#F0C868] p-4 shadow-lg">
+    <div class="container mx-auto flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <img src="https://your-logo-url-here.png" alt="Logo" class="w-12 h-12">
+        <span class="text-2xl font-bold text-white">LOGO</span>
+      </div>
+  
+      <!-- Links (Desktop) -->
+      <div class="hidden md:flex space-x-8">
+        <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Home</a>
+        <a href="/show_profile" class="text-white font-semibold hover:text-[#9F5F44]">My Profile</a>
+        <a href="#" class="text-white font-semibold hover:text-[#9F5F44]">Add Food</a>
+        <a href="/bookmark" class="text-white font-semibold hover:text-[#9F5F44]">My Bookmarks</a>
+
+      </div>
+  
+      <!-- Search Bar -->
+      <div class="hidden md:flex items-center bg-white rounded-full px-3 py-2">
+        <input type="text" placeholder="Search" class="bg-transparent outline-none text-black px-2">
+        <button>
+          <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M21 19l-5.2-5.2a7.5 7.5 0 10-1.4 1.4L19 21l2-2zM10 17a7 7 0 110-14 7 7 0 010 14z"></path>
+          </svg>
+        </button>
+      </div>
+  
+      <!-- Profile Icon -->
+      <div style="position: absolute; top: 10px; right: 10px; display: flex; align-items: center; cursor: pointer;">
+          <img src="{{ account.profile_image }}" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+          <span style="font-size: 1rem; color: #333; font-weight: bold;">Hi, {{ account.user }}</span>
+      </div>
+    </div>
+  
+    <!-- Mobile Menu (Hidden by default) -->
+    <div class="md:hidden mt-4 hidden" id="mobile-menu">
+      <a href="#" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">Home</a>
+      <a href="/show_profile" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">My Profile</a>
+      <a href="#" class="block py-2 px-4 text-white font-semibold hover:text-[#9F5F44]">Add Food</a>
+      <a href="/bookmark" class="text-white font-semibold hover:text-[#9F5F44]">My Bookmarks</a>
+
+      <div class="bg-white rounded-full px-3 py-2 mt-2">
+        <input type="text" placeholder="Search" class="bg-transparent outline-none text-black px-2 w-full">
+      </div>
+    </div>
+  </nav>
+  
+  <script>
+    // Toggle mobile menu visibility
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
+  

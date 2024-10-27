@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Makanan Jogja</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white; /* Background putih */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 950px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        /* Image Section */
+        .image-container {
+            flex: 1;
+            max-width: 40%;
+            margin-right: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Food Details Section */
+        .food-details {
+            flex: 2;
+        }
+
+        .category {
+            background-color: #F0C868; /* Warna kuning */
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: black;
+            margin-bottom: 12px;
+        }
+
+        .title-and-like {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .title-and-like h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        /* Like Button Styling */
+        .like-btn {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .like-icon {
+            width: 30px;
+            height: 30px;
+            fill: #e0e0e0;
+            stroke: black;
+            stroke-width: 2;
+            transition: fill 0.3s ease;
+        }
+
+        .liked .like-icon {
+            fill: red;
+            stroke: red;
+        }
+
+        .price {
+            color: black;
+            font-size: 1.5em;
+            margin: 12px 0;
+        }
+
+        .restaurant {
+            color: #555;
+            margin: 8px 0;
+        }
+
+        /* Button and Text Below */
+        .review-section {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .review-section p {
+            color: black;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .review-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            background-color: #F0C868; /* Warna tombol kuning */
+            color: black;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .review-btn:hover {
+            background-color: #e0b85c; /* Kuning sedikit lebih gelap saat hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Food Detail Container -->
+    <div class="container">
+        <!-- Image Section -->
+        <div class="image-container">
+            <img src="{{ food.image_url }}" alt="{{ food.name }}">
+        </div>
+
+        <!-- Food Details Section -->
+        <div class="food-details">
+            <!-- Category -->
+            <div class="category">{{ food.preference }}</div>
+
+            <!-- Title and Like Button -->
+            <div class="title-and-like">
+                <h1>{{ food.name }}</h1>
+                <button class="like-btn" id="likeBtn" onclick="toggleLike()">
+                    <svg id="likeIcon" class="like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-.5.5-.5-.5a5.5 5.5 0 0 0-7.8 7.8l8.3 8.3 8.3-8.3a5.5 5.5 0 0 0 0-7.8z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Price -->
+            <h3 class="price">RP {{ food.price }}</h3>
+
+            <!-- Restaurant -->
+            <p class="restaurant">{{ food.restaurant }}</p>
+        </div>
+    </div>
+
+    <!-- Review Section -->
+    <div class="review-section">
+        <p>Still Not So Sure? Read the Reviews!</p>
+        <a href="/review/{{ food.id }}">
+            <button class="review-btn">Read Reviews</button>
+        </a>
+    </div>
+
+    <!-- <script>
+        function toggleLike() {
+            var likeBtn = document.getElementById("likeBtn");
+            likeBtn.classList.toggle("liked");
+        }
+    </script> -->
+
+    <script>
+        function toggleLike(foodId) {
+            const likeBtn = document.getElementById("likeBtn");
+            const likeIcon = document.getElementById("likeIcon");
+    
+            fetch(`/like/${foodId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure CSRF token is available
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    likeIcon.classList.add("liked");
+                } else {
+                    likeIcon.classList.remove("liked");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    
+
+</body>
+</html>

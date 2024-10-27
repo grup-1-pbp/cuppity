@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path, include
-from django.contrib import admin
+
 
 
 
@@ -23,13 +20,14 @@ from django.contrib import admin
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
-
+MEDIA_URL = '/media_food_images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_food_images') 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    # URL Anda lainnya
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# Django akan membuat folder ini jika belum ada
+    # other URL patterns
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -38,7 +36,8 @@ urlpatterns = [
 SECRET_KEY = 'django-insecure-gses-ufdytl&)dgnxyp70s$*_ptww(!s4u%b@=t2@ew*4o*(-8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+PRODUCTION = os.getenv("PRODUCTION", False)
+DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", ]
 
@@ -55,8 +54,11 @@ INSTALLED_APPS = [
     'mangan_yuk',
     'main',
     'addProduct',
-    
-    
+    'detailmakanan',
+    'autentifikasi',
+    'review',
+    'bookmark',
+    'homepage',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +76,7 @@ ROOT_URLCONF = 'mangan_yuk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates', 'main')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,6 +138,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')   # This is optional and useful for production
+
+
+# Media files (User-uploaded content)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
