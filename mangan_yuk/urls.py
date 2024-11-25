@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include('main.urls',namespace='main')),
     path('bookmark/', include('bookmark.urls', namespace='bookmark')),
     path('', include('homepage.urls', namespace='homepage')) ,
+    path('artikel/', include('artikell.urls', namespace='artikell')),
 ]
     
 
