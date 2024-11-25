@@ -15,4 +15,6 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('show_profile', views.show_profile, name="show_profile"),
     path('bookmark/show_profile', views.show_profile, name="show_profile"),
+    path('auth/login_app/', views.login_app, name='login_app'),
+    path('auth/register_app/', views.register_app, name='register_app'),
 ]

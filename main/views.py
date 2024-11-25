@@ -49,6 +49,7 @@ def show_json(request):
 
 def show_xml_by_id(request, id):
     data_id = Food.objects.filter(pk=id)
+    print("web berhasil")
     return HttpResponse(serializers.serialize("xml", data_id), content_type="application/xml")
 
 
