@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-
+import json
 
 
 
@@ -58,3 +58,86 @@ def delete_food(request, id):
     food = get_object_or_404(Food,id=id)
     food.delete()
     return redirect('main:home') 
+
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            new_food = Food.objects.create(
+                name=data['name'],
+                restaurant=data['restaurant'],
+                deskripsi=data['deskripsi'],
+                price=data['price'],
+                preference=data['preference'],
+                image_url=data.get('image_url', None)  # image_url opsional
+            )
+            new_food.save()
+
+            return JsonResponse({
+                "status": "success",
+                "message": "Product added successfully!"
+            }, status=201)
+        except Exception as e:
+            return JsonResponse({
+                "status": "failed",
+                "message": f"Error: {str(e)}"
+            }, status=400)
+    else:
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request method."
+        }, status=401)
+
+@csrf_exempt
+def delete_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            food = Food.objects.get(id=data['id'])
+            food.delete()
+
+            return JsonResponse({
+                "status": "success",
+                "message": "Product deleted successfully!"
+            }, status=200)
+        except Food.DoesNotExist:
+            return JsonResponse({
+                "status": "failed",
+                "message": "Product not found."
+            }, status=404)
+    else:
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request method."
+        }, status=401)
+
+@csrf_exempt
+def update_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            food = Food.objects.get(id=data['id'])
+            food.name = data['name']
+            food.restaurant = data['restaurant']
+            food.deskripsi = data['deskripsi']
+            food.price = data['price']
+            food.preference = data['preference']
+            food.image_url = data.get('image_url', None)
+            food.save()
+
+            return JsonResponse({
+                "status": "success",
+                "message": "Product updated successfully!"
+            }, status=200)
+        except Food.DoesNotExist:
+            return JsonResponse({
+                "status": "failed",
+                "message": "Product not found."
+            }, status=404)
+    else:
+        return JsonResponse({
+            "status": "failed",
+            "message": "Invalid request method."
+        }, status=401)
