@@ -117,7 +117,7 @@
 
 <div class="container">
     <h1>Daftar Artikel</h1>
-    {% if account.role == 'seller' %}
+    {% if account.role == 'buyer' %}
         <a href="{% url 'artikell:add_artikel' %}" class="btn btn-primary">Tambah Artikel</a>
     {% endif %}
     <ul class="artikel-list">
@@ -126,7 +126,7 @@
                 <h2>{{ artikel.judul }}</h2>
                 <p>{{ artikel.isi }}</p>
                 <img src="{{ artikel.gambar_url }}" alt="Gambar Artikel">
-                {% if account.role == 'seller' %}
+                {% if account.role == 'buyer' %}
                     <button class="edit-btn btn btn-warning" data-id="{{ artikel.id }}">Edit</button>
                     <a href="{% url 'artikell:delete_artikel' artikel.id %}" class="btn btn-danger">Hapus</a>
                 {% endif %}
