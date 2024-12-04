@@ -48,8 +48,24 @@ def show_xml(request):
 
 def show_json(request):
     data = Food.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    sanitized_foods = []
 
+    # Convert queryset to a list of dictionaries
+    for food in data:
+        sanitized_foods.append({
+            'name': food.name,
+            'id': food.id,
+            'restaurant': food.restaurant,
+            'price': food.price,
+            'preference': food.preference,
+            'deskripsi': food.deskripsi,
+            'image_url': food.image_url if food.image_url else " "
+        })
+
+    # Now you can safely sort the list of dictionaries
+    sanitized_foods = sorted(sanitized_foods, key=lambda x: x['name'])
+
+    return JsonResponse(sanitized_foods, safe=False)
 
 def show_xml_by_id(request, id):
     data_id = Food.objects.filter(pk=id)
