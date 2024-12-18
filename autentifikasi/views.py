@@ -17,6 +17,18 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 
+@login_required
+def user_profile(request):
+    profile = request.user.profile
+    data = {
+        'name': request.user.username,
+        'role': profile.role,
+        'profile_image': profile.profile_image,
+    }
+    return JsonResponse({
+        'status': 'success',
+        'data': data
+    })
 @csrf_exempt
 def register_app(request):
     if request.method == 'POST':
