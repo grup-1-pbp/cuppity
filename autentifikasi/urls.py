@@ -18,5 +18,5 @@ urlpatterns = [
     path('auth/login_app/', views.login_app, name='login_app'),
     path('auth/register_app/', views.register_app, name='register_app'),
     path('auth/user_profile/', views.user_profile, name='user_profile'),
-
+    path('auth/logout-flutter/', views.logout_view, name='logout-flutter'),
 ]

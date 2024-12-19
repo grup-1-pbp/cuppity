@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'bookmark',
     'homepage',
     'artikell',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

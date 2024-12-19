@@ -200,6 +200,20 @@ def edit_profile(request):
     }
     return render(request, 'edit_profil.html', context)
 
+@csrf_exempt
+def logout_view(request):
+    if request.method in ["POST", "GET"]:
+        logout(request)  # Log out the user
+        return JsonResponse({
+            "status": "success",
+            "message": "User logged out successfully."
+        })
+    else:
+        return JsonResponse({
+            "status": "error",
+            "message": "Invalid request method."
+        }, status=400)
+
 
 def logout_user(request):
     logout(request)
