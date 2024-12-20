@@ -43,53 +43,105 @@ def bookmark_list(request):
         'bookmark_name': bookmark_name,  
     })
 
+@login_required
 def bookmark_list_flutter(request):
-    profile = request.user.profile  # Pastikan user sudah login
-    print(profile.name)
-    bookmark = Bookmark.objects.get_or_create(profile=profile)  # Pisahkan tuple menjadi dua variabel
-    liked_foods = bookmark.liked_foods.all()
+    try:
+        profile = request.user.profile
+        bookmark, created = Bookmark.objects.get_or_create(profile=profile)
+        liked_foods = bookmark.liked_foods.all()
 
-    # Buat data yang akan dikirim dalam response
-    data = {
-        "liked_food": list(liked_foods.values())  # Pastikan mengubah queryset menjadi list agar bisa dikonversi ke JSON
-    }
-    return JsonResponse({
-        'status': 'success',
-        'data': data
-    })
-
+        data = {
+            "liked_food": [
+                {
+                    "id": str(food.id),
+                    "name": food.name,
+                    "restaurant": food.restaurant,
+                    "deskripsi": food.deskripsi,
+                    "price": str(food.price),
+                    "preference": food.preference,
+                    "image_url": food.image_url if food.image_url else "",
+                } for food in liked_foods
+            ]
+        }
+        return JsonResponse({
+            'status': 'success',
+            'data': data
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
 
 @csrf_exempt
+@login_required
 def bookmark_flutter_toggle(request):
     if request.method == 'POST':
         try:
-            # Parse JSON data dari Flutter
             data = json.loads(request.body)
             food_id = data.get('food_id')
-            user = request.user
+            
+            if not food_id:
+                return JsonResponse({'error': 'Food ID is required'}, status=400)
 
-            if not user.is_authenticated:
-                return JsonResponse({'error': 'User not authenticated'}, status=401)
-
-            # Ambil atau buat bookmark milik user
-            profile = user.profile
+            profile = request.user.profile
             bookmark, created = Bookmark.objects.get_or_create(profile=profile)
 
-            # Ambil objek Food berdasarkan ID
-            food = get_object_or_404(Food, id=food_id)
+            try:
+                food = Food.objects.get(id=food_id)
+            except Food.DoesNotExist:
+                return JsonResponse({'error': 'Food not found'}, status=404)
 
-            # Toggle like/unlike
-            if food in bookmark.liked_foods.all():
+            is_bookmarked = bookmark.liked_foods.filter(id=food_id).exists()
+            
+            if is_bookmarked:
                 bookmark.liked_foods.remove(food)
-                liked = False
+                action = 'removed'
             else:
                 bookmark.liked_foods.add(food)
-                liked = True
+                action = 'added'
 
-            return JsonResponse({'liked': liked, 'food_id': str(food.id)}, status=200)
+            return JsonResponse({
+                'status': 'success',
+                'message': f'Bookmark {action} successfully',
+                'is_bookmarked': not is_bookmarked,
+                'food_id': str(food_id)
+            }, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-    return JsonResponse({'error': 'Invalid request'}, status=400)
-    
-    
+    return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
+
+
+@login_required
+def bookmark_list_json(request):
+    try:
+        profile = request.user.profile
+        bookmark, created = Bookmark.objects.get_or_create(profile=profile)
+        liked_foods = bookmark.liked_foods.all()
+
+        data = [
+            {
+                "id": str(food.id),
+                "name": food.name,
+                "restaurant": food.restaurant,
+                "deskripsi": food.deskripsi,
+                "price": str(food.price),
+                "preference": food.preference,
+                "image_url": food.image_url if food.image_url else "",
+            }
+            for food in liked_foods
+        ]
+
+        return JsonResponse({
+            'status': 'success',
+            'data': data
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
