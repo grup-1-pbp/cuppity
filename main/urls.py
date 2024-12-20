@@ -10,5 +10,4 @@ urlpatterns = [
     path('xml/<uuid:id>/', views.show_xml_by_id, name='show_xml_by_id'),  # Using UUID
     path('json/<uuid:id>/', views.show_json_by_id, name='show_json_by_id'),  # Using UUID
     
-    
 ]
